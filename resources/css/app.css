@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.tab-link.active {
+    border-color: #4A5568; /* Gris oscuro */
+    color: #000;
+    font-weight: 700;
+}
