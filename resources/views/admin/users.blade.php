@@ -1,5 +1,5 @@
 <x-admin-layout>
-    <div class="container mx-auto">
+    <div class="container block w-full">
         <h1 class="text-2xl font-bold mb-6">Control de Usuarios</h1>
 
         <!-- Sistema de pestañas -->
@@ -14,18 +14,16 @@
                 <h2 class="text-xl font-bold text-gray-800 mb-4">Lista de Usuarios</h2>
 
                 <!-- Tabla con DataTables -->
-                <table id="usersTable" class="table-auto w-full">
-                    <thead>
+                <table id="usersTable" class="dataTable min-w-full divide-y divide-gray-200 no-footer">
+                    <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-4 py-2">Nombre</th>
-                            <th class="px-4 py-2">Apellido</th>
-                            <th class="px-4 py-2">Correo Electrónico</th>
-                            <th class="px-4 py-2">Teléfono</th>
-                            <th class="px-4 py-2">Rol</th>
-                            <th class="px-4 py-2">Acciones</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">Nombre</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">Correo Electrónico</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">Rol</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody></tbody>
+                    <tbody class="bg-white divide-y divide-gray-200"></tbody>
                 </table>
             </div>
         </div>
@@ -39,11 +37,7 @@
                     @csrf
                     <div class="mb-4">
                         <label for="first_name" class="block text-sm font-medium text-gray-700">Nombre</label>
-                        <input type="text" name="first_name" id="first_name" class="mt-1 block w-full">
-                    </div>
-                    <div class="mb-4">
-                        <label for="last_name" class="block text-sm font-medium text-gray-700">Apellido</label>
-                        <input type="text" name="last_name" id="last_name" class="mt-1 block w-full">
+                        <input type="text" name="name" id="name" class="mt-1 block w-full">
                     </div>
                     <div class="mb-4">
                         <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
@@ -97,18 +91,41 @@
         });
 
         // Inicializar DataTables
-        $('#usersTable').DataTable({
+        var usersTable = $('#usersTable').DataTable({
             processing: true,
             serverSide: true,
             ajax: 'http://127.0.0.1:8000/admin/users/data',
+            columnDefs: [{
+                width: '25%',
+                targets: '_all',
+                createdCell: function(cell, cellData, rowData, rowIndex, colIndex) {
+                    console.log(cellData);
+                    $(cell).addClass('px-4 py-2');
+                    if (cellData == 'profesor' || cellData == 'alumno') {
+                        $(cell).addClass('uppercase');
+                    }
+                    if (cellData == 'profesor') {
+                        $(cell).addClass('text-blue-500');
+                    } else if (cellData == 'alumno') {
+                        $(cell).addClass('text-green-500');
+                    } else {
+                        $(cell).addClass('text-gray-500');
+                    }
+                },
+            }],
+            createdRow: function(row, data, dataIndex) {
+                $(row).addClass('px-6 py-4 whitespace-nowrap');
+            },
             columns: [
-                { data: 'first_name', name: 'first_name' },
-                { data: 'last_name', name: 'last_name' },
+                { data: 'name', name: 'name' },
                 { data: 'email', name: 'email' },
-                { data: 'phone', name: 'phone' },
                 { data: 'role', name: 'role' },
                 { data: 'actions', name: 'actions', orderable: false, searchable: false }
-            ]
+            ],
+        });
+
+        $(window).on('resize', function() {
+            usersTable.columns.adjust().draw();
         });
     </script>
 </x-admin-layout>

@@ -51,10 +51,13 @@ class AdminDashboardController extends Controller
         })->get();
 
         return datatables()->of($users)
-            ->addColumn('action', function ($user) {
+            ->addColumn('role', function ($user) {
+                return $user->getRoleNames()->implode(', '); // Imprimir los nombres de los roles
+            })
+            ->addColumn('actions', function ($user) {
                 return '<a href="#" class="btn btn-sm btn-primary">Edit</a>';
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['actions'])
             ->make(true);
     }
 }

@@ -7,6 +7,7 @@
     @vite(['resources/css/app.css']) <!-- Incluye los estilos y scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 </head>
@@ -19,7 +20,7 @@
             @include('partials.super-admin-menu')
         </div>
         <div class="w-full md:w-4/5 p-8">
-            <div class="bg-white rounded-lg py-6 px-2">
+            <div class="bg-white rounded-lg py-6 px-4">
                 {{ $slot }}
             </div>
         </div>
