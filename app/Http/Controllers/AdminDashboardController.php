@@ -40,6 +40,12 @@ class AdminDashboardController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
+        // crear meta dato phone que va guardado en la tabla user_meta
+        $user->meta()->create([
+            'meta_key' => 'phone',
+            'meta_value' => $request->phone,
+        ]);
+
         return redirect()->route('admin.users')->with('success', 'User created successfully');
     }
 

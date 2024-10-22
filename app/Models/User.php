@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles; // Importar el trait HasRoles
+use App\Models\UserMeta;
 
 class User extends Authenticatable
 {
@@ -45,5 +46,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * User Meta data relationship
+     */
+    public function meta()
+    {
+        return $this->hasMany(UserMeta::class);
     }
 }
