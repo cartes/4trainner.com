@@ -1,15 +1,67 @@
 <x-admin-layout>
+
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
     <div class="container block w-full">
         <h1 class="text-2xl font-bold mb-6">Control de Usuarios</h1>
 
         <!-- Sistema de pestañas -->
         <div class="flex space-x-4 border-b mb-6">
-            <a href="javascript:void(0)" class="tab-link text-md py-2 px-4 text-gray-600 hover:text-gray-800 border-b-2 border-transparent active" id="tab-users">Lista de Usuarios</a>
-            <a href="javascript:void(0)" class="tab-link text-md py-2 px-4 text-gray-600 hover:text-gray-800 border-b-2 border-transparent" id="tab-create">Crear Usuario</a>
+            <a href="javascript:void(0)" class="tab-link text-md py-2 px-4 text-gray-600 hover:text-gray-800 border-b-2 border-transparent {{ session('active_tab') === 'users' ? 'active' : null }}" id="tab-users">Lista de Usuarios</a>
+            <a href="javascript:void(0)" class="tab-link text-md py-2 px-4 text-gray-600 hover:text-gray-800 border-b-2 border-transparent {{ session('active_tab') === 'create' ? 'active' : null }}" id="tab-create">Crear Usuario</a>
         </div>
 
         <!-- Contenido de las pestañas -->
         <div id="tab-content-users" class="tab-content">
+
+            <!-- Modal de Edición de Usuario -->
+            <div id="editUserModal" class="fixed inset-0 z-50 hidden bg-gray-800 bg-opacity-50 flex items-center justify-center">
+                <div class="bg-white rounded-lg p-8 shadow-lg w-1/3">
+                    <h2 class="text-xl font-bold mb-4">Editar Usuario</h2>
+                    <form id="editUserForm" method="POST" action="{{ route('admin.users.update', ':id') }}">
+                        @csrf
+                        @method('PUT') <!-- Método PUT para actualizar -->
+                        <input type="hidden" name="user_id" id="user_id">
+
+                        <div class="mb-4">
+                            <label for="edit_name" class="block text-sm font-medium text-gray-700">Nombre</label>
+                            <input type="text" name="name" id="edit_name" class="mt-1 block w-full" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="edit_email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+                            <input type="email" name="email" id="edit_email" class="mt-1 block w-full" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="edit_phone" class="block text-sm font-medium text-gray-700">Teléfono</label>
+                            <input type="text" name="phone" id="edit_phone" class="mt-1 block w-full">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="edit_role" class="block text-sm font-medium text-gray-700">Rol</label>
+                            <select name="role" id="edit_role" class="mt-1 block w-full" required>
+                                <option value="alumno">Alumno</option>
+                                <option value="profesor">Profesor</option>
+                            </select>
+                        </div>
+
+                        <div class="mt-6">
+                            <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded">Actualizar Usuario</button>
+                        </div>
+                    </form>
+                    <button id="closeModal" class="mt-4 text-red-500">Cerrar</button>
+                </div>
+            </div>
+
             <div class="bg-white rounded-xl p-8 shadow-lg">
                 <h2 class="text-xl font-bold text-gray-800 mb-4">Lista de Usuarios</h2>
 
@@ -37,11 +89,11 @@
                     @csrf
                     <div class="mb-4">
                         <label for="first_name" class="block text-sm font-medium text-gray-700">Nombre</label>
-                        <input type="text" name="name" id="name" class="mt-1 block w-full">
+                        <input type="text" name="name" id="name" class="mt-1 block w-full" value="{{ old('name') }}">
                     </div>
                     <div class="mb-4">
                         <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
-                        <input type="email" name="email" id="email" class="mt-1 block w-full">
+                        <input type="email" name="email" id="email" class="mt-1 block w-full" value="{{ old('email') }}">
                     </div>
                     <div class="mb-4">
                         <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
@@ -99,7 +151,6 @@
                 width: '25%',
                 targets: '_all',
                 createdCell: function(cell, cellData, rowData, rowIndex, colIndex) {
-                    console.log(cellData);
                     $(cell).addClass('px-4 py-2');
                     if (cellData == 'profesor' || cellData == 'alumno') {
                         $(cell).addClass('uppercase');
@@ -127,5 +178,41 @@
         $(window).on('resize', function() {
             usersTable.columns.adjust().draw();
         });
+
+        $(document).ready(function() {
+            if ('{{ session('active_tab') }}' === 'create') {
+                document.getElementById('tab-create').click();
+            } else {
+                document.getElementById('tab-users').click();
+            }
+        });
+
+        // Controlador del modal de edicion
+        //
+        $(document).on('click', '.user-edit-btn', function() {
+            var user_id = $(this).data('id');
+
+            $.ajax({
+                url: '/admin/users/' + user_id + '/edit',
+                type: 'GET',
+                success: function(data) {
+                    $('#user_id').val(data.id);
+                    $('#edit_name').val(data.name);
+                    $('#edit_email').val(data.email);
+                    $('#edit_phone').val(data.phone);
+                    $('#edit_role').val(data.role);
+
+                    $('#editUserForm').attr('action', '{{ route("admin.users.update", ":id") }}'.replace(':id', user_id));
+
+                    $('#editUserModal').removeClass('hidden');
+                }
+            })
+        })
+
+        // Cerrar el modal
+        $('#closeModal').on('click', function() {
+            $('#editUserModal').addClass('hidden');
+        });
+
     </script>
 </x-admin-layout>

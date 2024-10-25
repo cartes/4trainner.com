@@ -7,7 +7,7 @@ use App\Models\User;
 
 class UserMeta extends Model
 {
-
+    protected $table = 'users_meta';
     protected $fillable = ['user_id', 'meta_key', 'meta_value'];
 
     public function user()

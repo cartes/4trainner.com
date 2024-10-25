@@ -19,10 +19,12 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'role:super-admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('admin/users', [AdminDashboardController::class, 'users'])->name('admin.users');
     Route::post('admin/users/store', [AdminDashboardController::class, 'store'])->name('admin.users.store');
     Route::get('admin/users/data', [AdminDashboardController::class, 'data'])->name('admin.users.data');
+    Route::get('admin/users/{id}/edit', [AdminDashboardController::class, 'edit'])->name('admin.users.edit');
+    Route::put('admin/users/{id}', [AdminDashboardController::class, 'update'])->name('admin.users.update');
 });
 
 require __DIR__.'/auth.php';

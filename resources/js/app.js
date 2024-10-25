@@ -1,6 +1,7 @@
 import './bootstrap';
 import Alpine from 'alpinejs';
 import $ from 'jquery';
+import 'flowbite';
 
 window.Alpine = Alpine;
 
