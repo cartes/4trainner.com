@@ -13,11 +13,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Crear el rol de Super Admin si no existe
-        $superAdminRole = Role::firstOrCreate([
-            'name' => 'super-admin',
-            'guard_name' => 'web', // Añadir el guard_name explícitamente
-        ]);
+        // Call the SuperAdminSeeder
+        $this->call(SuperAdminSeeder::class);
 
         // Crear el rol de Profesor si no existe
         $profesorRole = Role::firstOrCreate([
@@ -30,17 +27,6 @@ class DatabaseSeeder extends Seeder
             'name' => 'alumno',
             'guard_name' => 'web',
         ]);
-
-        // Crear un usuario y asignarle el rol de Super Admin si no existe ya
-        if (!User::where('email', 'cristiancartesa@gmail.com')->exists()) {
-            $user = User::create([
-                'name' => 'Admin',
-                'email' => 'cristiancartesa@gmail.com',
-                'password' => bcrypt('Front_242'),
-            ]);
-
-            $user->assignRole($superAdminRole);
-        }
 
         // Crear un usuario de prueba como Profesor si no existe ya
         if (!User::where('email', 'profesor@example.com')->exists()) {
