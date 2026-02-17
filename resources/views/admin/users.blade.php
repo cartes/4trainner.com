@@ -29,7 +29,7 @@
                     <form id="editUserForm" method="POST" action="{{ route('admin.users.update', ':id') }}">
                         @csrf
                         @method('PUT') <!-- Método PUT para actualizar -->
-                        <input type="hidden" name="user_id" id="user_id">
+                        <input class="hover:bg-blue-700" type="hidden" name="user_id" id="user_id">
 
                         <div class="mb-4">
                             <label for="edit_name" class="block text-sm font-medium text-gray-700">Nombre</label>
@@ -66,12 +66,14 @@
                 <h2 class="text-xl font-bold text-gray-800 mb-4">Lista de Usuarios</h2>
 
                 <!-- Tabla con DataTables -->
-                <table id="usersTable" class="dataTable min-w-full divide-y divide-gray-200 no-footer">
-                    <thead class="bg-gray-50">
+                <table id="usersTable" class="text-sm dataTable min-w-full divide-y divide-gray-200 no-footer">
+                    <thead class="bg-gray-50 text-sm">
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">Nombre</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">Correo Electrónico</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">Rol</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">Creado el</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">Vence en</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">Acciones</th>
                         </tr>
                     </thead>
@@ -89,24 +91,24 @@
                     @csrf
                     <div class="mb-4">
                         <label for="first_name" class="block text-sm font-medium text-gray-700">Nombre</label>
-                        <input type="text" name="name" id="name" class="mt-1 block w-full" value="{{ old('name') }}">
+                        <input type="text" name="name" id="name" class="rounded-md mt-1 block w-full" value="{{ old('name') }}">
                     </div>
                     <div class="mb-4">
                         <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
-                        <input type="email" name="email" id="email" class="mt-1 block w-full" value="{{ old('email') }}">
+                        <input type="email" name="email" id="email" class="rounded-md mt-1 block w-full" value="{{ old('email') }}">
                     </div>
                     <div class="mb-4">
                         <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
-                        <input type="password" name="password" id="password" class="mt-1 block w-full">
+                        <input type="password" name="password" id="password" class="rounded-md mt-1 block w-full">
                         <button type="button" onclick="generatePassword()" class="mt-2 text-sm text-blue-500">Generar Contraseña Segura</button>
                     </div>
                     <div class="mb-4">
                         <label for="phone" class="block text-sm font-medium text-gray-700">Teléfono</label>
-                        <input type="text" name="phone" id="phone" class="mt-1 block w-full">
+                        <input type="text" name="phone" id="phone" class="rounded-md mt-1 block w-full">
                     </div>
                     <div class="mb-4">
                         <label for="role" class="block text-sm font-medium text-gray-700">Rol</label>
-                        <select name="role" id="role" class="mt-1 block w-full">
+                        <select name="role" id="role" class="rounded-md mt-1 block w-full">
                             <option value="alumno">Alumno</option>
                             <option value="profesor">Profesor</option>
                         </select>
@@ -151,7 +153,7 @@
                 width: '25%',
                 targets: '_all',
                 createdCell: function(cell, cellData, rowData, rowIndex, colIndex) {
-                    $(cell).addClass('px-4 py-2');
+                    $(cell).addClass('px-4 py-2 text-sm');
                     if (cellData == 'profesor' || cellData == 'alumno') {
                         $(cell).addClass('uppercase');
                     }
@@ -171,6 +173,8 @@
                 { data: 'name', name: 'name' },
                 { data: 'email', name: 'email' },
                 { data: 'role', name: 'role' },
+                { data: 'created_at_formatted', name: 'created_at_formatted', orderable: false, serchable: false },
+                { data: 'remaining_days', name: 'remaining_days', orderable: false, serchable: false },
                 { data: 'actions', name: 'actions', orderable: false, searchable: false }
             ],
         });

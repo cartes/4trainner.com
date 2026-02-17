@@ -25,6 +25,7 @@ Route::middleware(['auth', 'role:super-admin'])->group(function () {
     Route::get('admin/users/data', [AdminDashboardController::class, 'data'])->name('admin.users.data');
     Route::get('admin/users/{id}/edit', [AdminDashboardController::class, 'edit'])->name('admin.users.edit');
     Route::put('admin/users/{id}', [AdminDashboardController::class, 'update'])->name('admin.users.update');
+    Route::get('admin/categories', [AdminDashboardController::class, 'categories'])->name('admin.categories');
 });
 
 require __DIR__.'/auth.php';

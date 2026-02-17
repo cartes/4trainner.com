@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Carbon\Carbon;
 
 class AdminDashboardController extends Controller
 {
@@ -54,12 +55,20 @@ class AdminDashboardController extends Controller
             ]);
 
             return redirect()->route('admin.users')->with(
-                ['success'=> 'User created successfully'],
+                ['success' => 'User created successfully'],
                 ['active_tab' => 'create']
             );
 
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            \Log::error('Error creating user', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'request_data' => $request->except('password')
+            ]);
+
+            return redirect()->back()
+                ->withErrors(['error' => 'Error al crear el usuario. Por favor, intenta nuevamente.'])
+                ->withInput($request->except('password'));
         }
 
     }
@@ -75,8 +84,20 @@ class AdminDashboardController extends Controller
             ->addColumn('role', function ($user) {
                 return $user->getRoleNames()->implode(', '); // Imprimir los nombres de los roles
             })
+            ->addColumn('created_at_formatted', function ($user) {
+                return Carbon::parse($user->created_at)->format('d-m-Y');
+            })
+            ->addColumn('remaining_days', function ($user) {
+                $createdDate = Carbon::parse($user->created_at);
+                $daysRemaining = $createdDate->diffForHumans($createdDate->copy()->addMonth(), true);
+
+                return $daysRemaining;
+            })
             ->addColumn('actions', function ($user) {
-                return '<a href="#" data-id="' . $user->id . '" class="user-edit-btn btn btn-sm btn-primary">Edit</a>';
+                return '
+                    <a href="#" data-id="' . $user->id . '" class="user-edit-btn bg-blue-500 rounded hover:bg-blue-700 font-bold text-white py-2 px-5">Editar</a>
+                    <a href="#" data-id="' . $user->id . '" class="user-delete-btn bg-red-500 rounded hover:bg-red-700 font-bold text-white py-2 px-5 ml-2">Eliminar</a>
+                ';
             })
             ->rawColumns(['actions'])
             ->make(true);
@@ -129,12 +150,21 @@ class AdminDashboardController extends Controller
             }
 
             return redirect()->route('admin.users')->with(
-                ['success'=> 'User updated successfully'],
+                ['success' => 'User updated successfully'],
                 ['active_tab' => 'edit']
             );
 
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            \Log::error('Error updating user', [
+                'user_id' => $id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'request_data' => request()->except('password')
+            ]);
+
+            return redirect()->back()
+                ->withErrors(['error' => 'Error al actualizar el usuario. Por favor, intenta nuevamente.'])
+                ->withInput(request()->except('password'));
         }
     }
 }
