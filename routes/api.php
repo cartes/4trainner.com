@@ -50,15 +50,4 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
         Route::get('/admin/dashboard', [\App\Http\Controllers\Api\V1\Admin\DashboardController::class, 'index']);
     });
 
-    // Teacher routes
-    Route::middleware(['role:profesor|super-admin'])->prefix('teacher')->group(function () {
-        Route::get('/students', [\App\Http\Controllers\Teacher\StudentController::class, 'list']);
-        Route::get('/students/{id}', [\App\Http\Controllers\Teacher\StudentController::class, 'details']);
-    });
-
-    // Teacher routes
-    Route::middleware(['role:profesor|super-admin'])->prefix('teacher')->group(function () {
-        Route::get('/students', [\App\Http\Controllers\Teacher\StudentController::class, 'list']);
-        Route::get('/students/{id}', [\App\Http\Controllers\Teacher\StudentController::class, 'details']);
-    });
 });

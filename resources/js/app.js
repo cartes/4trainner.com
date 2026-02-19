@@ -13,10 +13,6 @@ import StudentDashboard from "./Components/StudentDashboard.vue";
 import ModeratorDashboard from "./Components/ModeratorDashboard.vue";
 import SuperAdminDashboard from "./Components/SuperAdminDashboard.vue";
 
-// New Teacher components from main
-import StudentIndex from "./Components/Teacher/Students/Index.vue";
-import StudentShow from "./Components/Teacher/Students/Show.vue";
-
 const components = {
     Welcome,
     Pricing,
@@ -24,8 +20,6 @@ const components = {
     StudentDashboard,
     ModeratorDashboard,
     SuperAdminDashboard,
-    StudentIndex,
-    StudentShow,
 };
 
 window.Alpine = Alpine;

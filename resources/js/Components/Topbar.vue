@@ -71,6 +71,19 @@ const handleLogout = async () => {
         console.error('Logout failed:', error);
     }
 };
+const userRoleLabel = computed(() => {
+    const role = user.value?.roles?.[0];
+    if (!role) return '';
+
+    const roleMap = {
+        'profesor': 'PERSONAL TRAINER',
+        'alumno': 'ALUMNO',
+        'moderador': 'MODERADOR',
+        'super-admin': 'SUPER ADMIN'
+    };
+
+    return roleMap[role] || role.toUpperCase();
+});
 </script>
 
 <template>
@@ -129,7 +142,7 @@ const handleLogout = async () => {
                             class="text-[10px] font-black text-primary-dark dark:text-white uppercase tracking-tighter leading-none">
                             {{ user?.name }}</p>
                         <p class="text-[8px] text-slate-400 font-bold uppercase tracking-widest mt-1">{{
-                            user?.roles?.[0] }}</p>
+                            userRoleLabel }}</p>
                     </div>
                     <span class="material-icons text-slate-400 text-sm transition-transform"
                         :class="{ 'rotate-180': isProfileOpen }">expand_more</span>

@@ -113,7 +113,7 @@ onMounted(() => {
                     </div>
                 </div>
                 <div class="lg:w-1/2 relative mt-12 lg:mt-0 flex justify-end">
-                    <img alt="Fitness Trainer" class="w-full max-w-lg object-cover mask-image-fade rounded-b-none"
+                    <img alt="Personal Trainer" class="w-full max-w-lg object-cover mask-image-fade rounded-b-none"
                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3S3R4fSaJp2exiDVOCFO23seJmfqkjLBwyX04gucTlHsFgHcWyGdbPMnUS4G0b_H3JteMb4iNuL0m2s2VZqY7puYcNopn3w4BDhyutFXdRDEU7dcNuLNPHwD1DmzJQYK57F-q5n3vZf7iDbB-_lOCFhnJGpBbCe-2V7rmwOIEGT-qwWEnKebZyF4bPibIWiGYO6cfklUja_IOKVa-E9qboAo5N6yjVDEXhVyoZR9sGQdonleRe5x3u1578z3x1HdiP1xKn7813_Wx"
                         style="mask-image: linear-gradient(to bottom, black 80%, transparent 100%);" />
                 </div>

@@ -69,13 +69,6 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'professor_student', 'professor_id', 'student_id');
     }
 
-    /**
-     * Get the professors associated with the user (as a student).
-     */
-    public function professors(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'professor_student', 'student_id', 'professor_id');
-    }
 
     /**
      * Get the progress records for the user (as a student).
@@ -98,7 +91,7 @@ class User extends Authenticatable
      */
     public function trainers()
     {
-        return $this->belongsToMany(User::class, 'trainer_student', 'student_id', 'trainer_id')
+        return $this->belongsToMany(User::class, 'professor_student', 'student_id', 'professor_id')
             ->withTimestamps();
     }
 }
