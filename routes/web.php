@@ -3,14 +3,34 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PageController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/planes', [PageController::class, 'pricing'])->name('pricing');
+
+// Central dashboard redirect (role-based)
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+// Trainer dashboard
+Route::get('/trainer/dashboard', function () {
+    return view('trainer.dashboard');
+})->middleware(['auth', 'verified', 'role:profesor'])->name('trainer.dashboard');
+
+// Student dashboard
+Route::get('/student/dashboard', function () {
+    return view('student.dashboard');
+})->middleware(['auth', 'verified', 'role:alumno|student'])->name('student.dashboard');
+
+// Moderator dashboard
+Route::get('/moderator/dashboard', function () {
+    return view('moderator.dashboard');
+})->middleware(['auth', 'verified', 'role:moderador'])->name('moderator.dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -28,9 +48,10 @@ Route::middleware(['auth', 'role:super-admin'])->group(function () {
     Route::get('admin/categories', [AdminDashboardController::class, 'categories'])->name('admin.categories');
 });
 
+// New Teacher routes from main
 Route::middleware(['auth', 'role:profesor|super-admin'])->prefix('teacher')->name('teacher.')->group(function () {
     Route::get('/students', [\App\Http\Controllers\Teacher\StudentController::class, 'index'])->name('students.index');
     Route::get('/students/{id}', [\App\Http\Controllers\Teacher\StudentController::class, 'show'])->name('students.show');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

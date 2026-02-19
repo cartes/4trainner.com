@@ -84,4 +84,21 @@ class User extends Authenticatable
     {
         return $this->hasMany(StudentProgress::class, 'student_id');
     }
+
+    /**
+     * Get the routines created by this trainer/professor.
+     */
+    public function routines()
+    {
+        return $this->hasMany(Routine::class, 'trainer_id');
+    }
+
+    /**
+     * Compatibility: Get the trainers assigned to this student (Legacy).
+     */
+    public function trainers()
+    {
+        return $this->belongsToMany(User::class, 'trainer_student', 'student_id', 'trainer_id')
+            ->withTimestamps();
+    }
 }

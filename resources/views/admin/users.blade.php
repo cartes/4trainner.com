@@ -1,13 +1,13 @@
 <x-admin-layout>
 
     @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
     @endif
 
     <div class="container block w-full">
@@ -15,15 +15,20 @@
 
         <!-- Sistema de pestañas -->
         <div class="flex space-x-4 border-b mb-6">
-            <a href="javascript:void(0)" class="tab-link text-md py-2 px-4 text-gray-600 hover:text-gray-800 border-b-2 border-transparent {{ session('active_tab') === 'users' ? 'active' : null }}" id="tab-users">Lista de Usuarios</a>
-            <a href="javascript:void(0)" class="tab-link text-md py-2 px-4 text-gray-600 hover:text-gray-800 border-b-2 border-transparent {{ session('active_tab') === 'create' ? 'active' : null }}" id="tab-create">Crear Usuario</a>
+            <a href="javascript:void(0)"
+                class="tab-link text-md py-2 px-4 text-gray-600 hover:text-gray-800 border-b-2 border-transparent {{ session('active_tab') === 'users' ? 'active' : null }}"
+                id="tab-users">Lista de Usuarios</a>
+            <a href="javascript:void(0)"
+                class="tab-link text-md py-2 px-4 text-gray-600 hover:text-gray-800 border-b-2 border-transparent {{ session('active_tab') === 'create' ? 'active' : null }}"
+                id="tab-create">Crear Usuario</a>
         </div>
 
         <!-- Contenido de las pestañas -->
         <div id="tab-content-users" class="tab-content">
 
             <!-- Modal de Edición de Usuario -->
-            <div id="editUserModal" class="fixed inset-0 z-50 hidden bg-gray-800 bg-opacity-50 flex items-center justify-center">
+            <div id="editUserModal"
+                class="fixed inset-0 z-50 hidden bg-gray-800 bg-opacity-50 flex items-center justify-center">
                 <div class="bg-white rounded-lg p-8 shadow-lg w-1/3">
                     <h2 class="text-xl font-bold mb-4">Editar Usuario</h2>
                     <form id="editUserForm" method="POST" action="{{ route('admin.users.update', ':id') }}">
@@ -37,7 +42,8 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="edit_email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+                            <label for="edit_email" class="block text-sm font-medium text-gray-700">Correo
+                                Electrónico</label>
                             <input type="email" name="email" id="edit_email" class="mt-1 block w-full" required>
                         </div>
 
@@ -50,12 +56,13 @@
                             <label for="edit_role" class="block text-sm font-medium text-gray-700">Rol</label>
                             <select name="role" id="edit_role" class="mt-1 block w-full" required>
                                 <option value="alumno">Alumno</option>
-                                <option value="profesor">Profesor</option>
+                                <option value="profesor">Personal Trainer</option>
                             </select>
                         </div>
 
                         <div class="mt-6">
-                            <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded">Actualizar Usuario</button>
+                            <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded">Actualizar
+                                Usuario</button>
                         </div>
                     </form>
                     <button id="closeModal" class="mt-4 text-red-500">Cerrar</button>
@@ -69,12 +76,24 @@
                 <table id="usersTable" class="text-sm dataTable min-w-full divide-y divide-gray-200 no-footer">
                     <thead class="bg-gray-50 text-sm">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">Nombre</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">Correo Electrónico</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">Rol</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">Creado el</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">Vence en</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">Acciones</th>
+                            <th
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">
+                                Nombre</th>
+                            <th
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">
+                                Correo Electrónico</th>
+                            <th
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">
+                                Rol</th>
+                            <th
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">
+                                Creado el</th>
+                            <th
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">
+                                Vence en</th>
+                            <th
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2">
+                                Acciones</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200"></tbody>
@@ -91,16 +110,19 @@
                     @csrf
                     <div class="mb-4">
                         <label for="first_name" class="block text-sm font-medium text-gray-700">Nombre</label>
-                        <input type="text" name="name" id="name" class="rounded-md mt-1 block w-full" value="{{ old('name') }}">
+                        <input type="text" name="name" id="name" class="rounded-md mt-1 block w-full"
+                            value="{{ old('name') }}">
                     </div>
                     <div class="mb-4">
                         <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
-                        <input type="email" name="email" id="email" class="rounded-md mt-1 block w-full" value="{{ old('email') }}">
+                        <input type="email" name="email" id="email" class="rounded-md mt-1 block w-full"
+                            value="{{ old('email') }}">
                     </div>
                     <div class="mb-4">
                         <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
                         <input type="password" name="password" id="password" class="rounded-md mt-1 block w-full">
-                        <button type="button" onclick="generatePassword()" class="mt-2 text-sm text-blue-500">Generar Contraseña Segura</button>
+                        <button type="button" onclick="generatePassword()" class="mt-2 text-sm text-blue-500">Generar
+                            Contraseña Segura</button>
                     </div>
                     <div class="mb-4">
                         <label for="phone" class="block text-sm font-medium text-gray-700">Teléfono</label>
@@ -110,11 +132,12 @@
                         <label for="role" class="block text-sm font-medium text-gray-700">Rol</label>
                         <select name="role" id="role" class="rounded-md mt-1 block w-full">
                             <option value="alumno">Alumno</option>
-                            <option value="profesor">Profesor</option>
+                            <option value="profesor">Personal Trainer</option>
                         </select>
                     </div>
                     <div class="mt-6">
-                        <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded">Crear Usuario</button>
+                        <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded">Crear
+                            Usuario</button>
                     </div>
                 </form>
             </div>
@@ -169,13 +192,36 @@
             createdRow: function(row, data, dataIndex) {
                 $(row).addClass('px-6 py-4 whitespace-nowrap');
             },
-            columns: [
-                { data: 'name', name: 'name' },
-                { data: 'email', name: 'email' },
-                { data: 'role', name: 'role' },
-                { data: 'created_at_formatted', name: 'created_at_formatted', orderable: false, serchable: false },
-                { data: 'remaining_days', name: 'remaining_days', orderable: false, serchable: false },
-                { data: 'actions', name: 'actions', orderable: false, searchable: false }
+            columns: [{
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'email',
+                    name: 'email'
+                },
+                {
+                    data: 'role',
+                    name: 'role'
+                },
+                {
+                    data: 'created_at_formatted',
+                    name: 'created_at_formatted',
+                    orderable: false,
+                    serchable: false
+                },
+                {
+                    data: 'remaining_days',
+                    name: 'remaining_days',
+                    orderable: false,
+                    serchable: false
+                },
+                {
+                    data: 'actions',
+                    name: 'actions',
+                    orderable: false,
+                    searchable: false
+                }
             ],
         });
 
@@ -206,7 +252,8 @@
                     $('#edit_phone').val(data.phone);
                     $('#edit_role').val(data.role);
 
-                    $('#editUserForm').attr('action', '{{ route("admin.users.update", ":id") }}'.replace(':id', user_id));
+                    $('#editUserForm').attr('action', '{{ route('admin.users.update', ':id') }}'
+                        .replace(':id', user_id));
 
                     $('#editUserModal').removeClass('hidden');
                 }
@@ -217,6 +264,5 @@
         $('#closeModal').on('click', function() {
             $('#editUserModal').addClass('hidden');
         });
-
     </script>
 </x-admin-layout>

@@ -62,6 +62,9 @@ class AuthController extends Controller
             ]);
         }
 
+        // Establish PHP Session for stateful API/web routes
+        \Illuminate\Support\Facades\Auth::login($user);
+
         // Revoke all previous tokens
         $user->tokens()->delete();
 
@@ -84,7 +87,19 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        \Illuminate\Support\Facades\Log::info('Logout initiated for user: ' . ($request->user() ? $request->user()->email : 'none'));
+
+        if ($request->user()) {
+            $request->user()->currentAccessToken()->delete();
+        }
+
+        // Destroy PHP Session aggressively
+        \Illuminate\Support\Facades\Auth::guard('web')->logout();
+        \Illuminate\Support\Facades\Session::flush();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        \Illuminate\Support\Facades\Log::info('Logout completed, session invalidated.');
 
         return response()->json([
             'message' => 'Logout exitoso'

@@ -4,11 +4,11 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Panel de Administración | 4Trainner</title>
+    <title>Personal Trainer Dashboard | 4Trainner</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=Outfit:wght@300;400;600;700&amp;display=swap"
         rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -23,7 +23,7 @@
 </script>
 
 <body class="bg-background-light dark:bg-background-dark border-none transition-colors duration-300">
-    <div id="app" data-component="SuperAdminDashboard" data-auth-check="{{ Auth::check() ? 'true' : 'false' }}">
+    <div id="app" data-component="TrainerDashboard" data-auth-check="{{ Auth::check() ? 'true' : 'false' }}">
     </div>
 </body>
 

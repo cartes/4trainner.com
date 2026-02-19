@@ -16,6 +16,14 @@ export const useAuthStore = defineStore("auth", {
         userRoles: (state) => state.user?.roles || [],
         hasRole: (state) => (role) =>
             state.user?.roles?.includes(role) || false,
+        isAdmin: (state) => state.user?.roles?.includes("super-admin") || false,
+        isTrainer: (state) => state.user?.roles?.includes("profesor") || false,
+        isStudent: (state) =>
+            state.user?.roles?.includes("alumno") ||
+            state.user?.roles?.includes("student") ||
+            false,
+        isModerator: (state) =>
+            state.user?.roles?.includes("moderador") || false,
     },
 
     actions: {
@@ -42,6 +50,9 @@ export const useAuthStore = defineStore("auth", {
             this.error = null;
 
             try {
+                // Initialize CSRF for Sanctum stateful auth
+                await api.get("/../../sanctum/csrf-cookie");
+
                 const { data } = await api.post("/login", credentials);
                 this.setAuth(data.user, data.token);
                 return data;
@@ -58,7 +69,8 @@ export const useAuthStore = defineStore("auth", {
             this.loading = true;
 
             try {
-                await api.post("/logout");
+                // Use the WEB logout route to ensure the session is destroyed
+                await api.post("/../../logout");
             } catch (error) {
                 console.error("Error during logout:", error);
             } finally {

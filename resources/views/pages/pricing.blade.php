@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>FoxFit | Empower Your Fitness Journey</title>
+    <title>Planes y Precios | FoxFit</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link
@@ -16,11 +16,9 @@
 
 <body
     class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-200 font-sans transition-colors duration-300">
-    <div id="app" data-component="Welcome" data-can-login="{{ Route::has('login') ? 'true' : 'false' }}"
-        data-can-register="{{ Route::has('register') ? 'true' : 'false' }}"
-        data-auth-check="{{ Auth::check() ? 'true' : 'false' }}" data-login-url="{{ route('login') }}"
-        data-register-url="{{ route('register') }}" data-dashboard-url="{{ url('/dashboard') }}"
-        data-pricing-url="{{ route('pricing') }}"></div>
+    <div id="app" data-component="Pricing" data-auth-check="{{ Auth::check() ? 'true' : 'false' }}"
+        data-login-url="{{ route('login') }}" data-register-url="{{ route('register') }}"
+        data-dashboard-url="{{ url('/dashboard') }}"></div>
 </body>
 
 </html>
