@@ -1,6 +1,6 @@
 # Roadmap del Proyecto 4Trainner.com
 
-Este documento describe la hoja de ruta para completar el desarrollo de la plataforma de streaming "Antigravity".
+Este documento describe la hoja de ruta para completar el desarrollo de la plataforma de streaming "4Trainer".
 
 ## Fase 1: Consolidación y Refactorización (Inmediato)
 
