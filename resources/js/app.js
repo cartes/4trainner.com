@@ -5,6 +5,8 @@ import "flowbite";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import Welcome from "./Components/Welcome.vue";
+import StudentIndex from "./Components/Teacher/Students/Index.vue";
+import StudentShow from "./Components/Teacher/Students/Show.vue";
 
 window.Alpine = Alpine;
 Alpine.start();
@@ -18,7 +20,16 @@ const pinia = createPinia();
 
 const appElement = document.getElementById("app");
 if (appElement) {
-    const app = createApp(Welcome, { ...appElement.dataset });
+    const componentName = appElement.dataset.component;
+    let component = Welcome;
+
+    if (componentName === 'StudentIndex') {
+        component = StudentIndex;
+    } else if (componentName === 'StudentShow') {
+        component = StudentShow;
+    }
+
+    const app = createApp(component, { ...appElement.dataset });
     app.use(pinia);
     app.mount("#app");
 }

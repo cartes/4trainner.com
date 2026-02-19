@@ -28,4 +28,9 @@ Route::middleware(['auth', 'role:super-admin'])->group(function () {
     Route::get('admin/categories', [AdminDashboardController::class, 'categories'])->name('admin.categories');
 });
 
+Route::middleware(['auth', 'role:profesor|super-admin'])->prefix('teacher')->name('teacher.')->group(function () {
+    Route::get('/students', [\App\Http\Controllers\Teacher\StudentController::class, 'index'])->name('students.index');
+    Route::get('/students/{id}', [\App\Http\Controllers\Teacher\StudentController::class, 'show'])->name('students.show');
+});
+
 require __DIR__.'/auth.php';
