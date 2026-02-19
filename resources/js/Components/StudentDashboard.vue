@@ -82,7 +82,7 @@ onMounted(() => {
                         </h1>
                         <p class="text-slate-500 dark:text-slate-400 mt-2 flex items-center gap-2 font-medium">
                             <span
-                                class="w-3 h-3 rounded-full bg-primary animate-pulse shadow-[0_0_10px_rgba(212,255,55,0.8)]"></span>
+                                class="w-3 h-3 rounded-full bg-primary animate-pulse shadow-[0_0_10px_rgba(255,85,0,0.8)]"></span>
                             Tu entrenamiento estratégico está listo
                         </p>
                     </div>

@@ -3,10 +3,14 @@ import { computed, ref, onMounted, onUnmounted } from 'vue';
 import { useAuthStore } from '../stores/auth';
 
 const props = defineProps({
-    isDark: Boolean
+    isDark: Boolean,
+    activeSection: {
+        type: String,
+        default: null
+    }
 });
 
-const emit = defineEmits(['toggle-dark']);
+const emit = defineEmits(['toggle-dark', 'section-change']);
 
 const authStore = useAuthStore();
 const user = computed(() => authStore.user);
@@ -26,19 +30,20 @@ onMounted(() => window.addEventListener('click', closeProfile));
 onUnmounted(() => window.removeEventListener('click', closeProfile));
 
 const navLinks = computed(() => {
-    const links = [
-        { name: 'Dashboard', route: '/dashboard' }
-    ];
+    const links = [];
 
     if (authStore.isAdmin) {
         links.push(
+            { name: 'Dashboard', route: '/dashboard' },
             { name: 'Usuarios', route: '/admin/users' },
             { name: 'Categorías', route: '/admin/categories' }
         );
     } else if (authStore.isTrainer) {
+        // Trainer links switch sections within the dashboard instead of navigating
         links.push(
-            { name: 'Mis Alumnos', route: '/trainer/dashboard' },
-            { name: 'Rutinas', route: '/trainer/routines' }
+            { name: 'Panel Principal', section: 'dashboard', icon: 'dashboard' },
+            { name: 'Alumnos', section: 'alumnos', icon: 'groups' },
+            { name: 'Rutinas', section: 'rutinas', icon: 'fitness_center' },
         );
     } else if (authStore.isStudent) {
         links.push(
@@ -49,6 +54,14 @@ const navLinks = computed(() => {
 
     return links;
 });
+
+const handleNavClick = (link) => {
+    if (link.section) {
+        emit('section-change', link.section);
+    } else {
+        window.location.href = link.route;
+    }
+};
 
 const handleLogout = async () => {
     try {
@@ -75,10 +88,14 @@ const handleLogout = async () => {
 
             <!-- Horizontal Menu -->
             <nav class="flex items-center gap-2">
-                <a v-for="link in navLinks" :key="link.name" :href="link.route"
-                    class="px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary hover:bg-primary/10 dark:hover:bg-primary/5 transition-all">
+                <button v-for="link in navLinks" :key="link.name" @click="handleNavClick(link)" :class="[
+                    'px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all',
+                    link.section && activeSection === link.section
+                        ? 'text-primary bg-primary/10 dark:bg-primary/5'
+                        : 'text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary hover:bg-primary/10 dark:hover:bg-primary/5'
+                ]">
                     {{ link.name }}
-                </a>
+                </button>
             </nav>
         </div>
 

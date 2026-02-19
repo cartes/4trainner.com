@@ -25,6 +25,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
 
     // Trainer routes
     Route::get('/trainer/students', [\App\Http\Controllers\Api\V1\Trainer\StudentController::class, 'index']);
+    Route::get('/trainer/stats', [\App\Http\Controllers\Api\V1\Trainer\StudentController::class, 'stats']);
     Route::get('/trainer/routines', [\App\Http\Controllers\Api\V1\Trainer\RoutineController::class, 'index']);
     Route::post('/trainer/routines', [\App\Http\Controllers\Api\V1\Trainer\RoutineController::class, 'store']);
     Route::post('/trainer/routines/assign', [\App\Http\Controllers\Api\V1\Trainer\RoutineController::class, 'assign']);

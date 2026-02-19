@@ -103,12 +103,12 @@ const handleLogout = async () => {
                     <a v-for="item in group.items" :key="item.name" :href="item.route"
                         class="flex items-center gap-4 px-6 py-4 rounded-[1.5rem] transition-all group hover:bg-primary/10 dark:hover:bg-primary/5 text-slate-600 dark:text-slate-400 font-bold uppercase tracking-widest text-[10px] relative overflow-hidden active:scale-95">
                         <span class="material-icons text-xl group-hover:text-primary transition-colors">{{ item.icon
-                        }}</span>
+                            }}</span>
                         <span class="group-hover:translate-x-1 transition-transform">{{ item.name }}</span>
 
                         <!-- Active Indicator (Dot) -->
                         <div
-                            class="absolute right-6 w-1.5 h-1.5 bg-primary rounded-full opacity-0 group-hover:opacity-100 shadow-[0_0_8px_#bef264]">
+                            class="absolute right-6 w-1.5 h-1.5 bg-primary rounded-full opacity-0 group-hover:opacity-100 shadow-[0_0_8px_#FF5500]">
                         </div>
                     </a>
                 </div>

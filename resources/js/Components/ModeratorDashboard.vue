@@ -82,7 +82,7 @@ onMounted(() => {
                         </h1>
                         <p class="text-slate-500 dark:text-slate-400 mt-2 flex items-center gap-2 font-medium">
                             <span
-                                class="w-3 h-3 rounded-full bg-primary animate-pulse shadow-[0_0_10px_rgba(212,255,55,0.8)]"></span>
+                                class="w-3 h-3 rounded-full bg-primary animate-pulse shadow-[0_0_10px_rgba(255,85,0,0.8)]"></span>
                             Supervisión y control de la infraestructura humana
                         </p>
                     </div>
@@ -140,7 +140,7 @@ onMounted(() => {
                                 <p
                                     class="text-4xl font-display font-black text-primary-dark dark:text-white tracking-tighter">
                                     {{ dashboardData.stats.total_profesores }}</p>
-                                <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-2">Elite
+                                <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-2">Personal
                                     Trainers
                                 </p>
                             </div>

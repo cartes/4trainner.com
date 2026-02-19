@@ -83,7 +83,7 @@ onMounted(() => {
                         </h1>
                         <p class="text-slate-500 dark:text-slate-400 mt-2 flex items-center gap-2 font-medium">
                             <span
-                                class="w-3 h-3 rounded-full bg-primary animate-pulse shadow-[0_0_10px_rgba(212,255,55,0.8)]"></span>
+                                class="w-3 h-3 rounded-full bg-primary animate-pulse shadow-[0_0_10px_rgba(255,85,0,0.8)]"></span>
                             Inteligencia operativa y métricas de plataforma
                         </p>
                     </div>
@@ -146,7 +146,8 @@ onMounted(() => {
                             <p
                                 class="text-4xl font-display font-black text-primary-dark dark:text-white tracking-tighter">
                                 {{ dashboardData.stats.total_profesores }}</p>
-                            <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-2">Profesores
+                            <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-2">Personal
+                                Trainers
                             </p>
                         </div>
                         <div
@@ -204,7 +205,7 @@ onMounted(() => {
                                             {{ day.date }}</p>
                                         <div
                                             class="flex-1 bg-slate-50 dark:bg-white/5 rounded-full h-3 overflow-hidden border border-slate-100 dark:border-white/5">
-                                            <div class="h-full bg-primary rounded-full transition-all duration-1000 shadow-[0_0_15px_rgba(212,255,55,0.3)]"
+                                            <div class="h-full bg-primary rounded-full transition-all duration-1000 shadow-[0_0_15px_rgba(255,85,0,0.3)]"
                                                 :style="{ width: `${Math.min((day.count / Math.max(...dashboardData.new_users_per_day.map(d => d.count))) * 100, 100)}%` }">
                                             </div>
                                         </div>
