@@ -16,6 +16,9 @@ class DatabaseSeeder extends Seeder
         // Call the SuperAdminSeeder
         $this->call(SuperAdminSeeder::class);
 
+        // Call our new TestUserSeeder
+        $this->call(TestUserSeeder::class);
+
         // Crear el rol de Profesor si no existe
         $profesorRole = Role::firstOrCreate([
             'name' => 'profesor',
@@ -25,6 +28,12 @@ class DatabaseSeeder extends Seeder
         // Crear el rol de Alumno si no existe
         $alumnoRole = Role::firstOrCreate([
             'name' => 'alumno',
+            'guard_name' => 'web',
+        ]);
+
+        // Crear el rol de Student (usado en AuthController) if not exists
+        Role::firstOrCreate([
+            'name' => 'student',
             'guard_name' => 'web',
         ]);
 

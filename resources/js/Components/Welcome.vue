@@ -1,5 +1,6 @@
 <script setup>
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
+import LoginForm from './LoginForm.vue';
 
 const props = defineProps({
     loginUrl: { type: String, default: '/login' },
@@ -7,21 +8,35 @@ const props = defineProps({
     dashboardUrl: { type: String, default: '/dashboard' },
     canLogin: { type: String, default: 'true' },
     authCheck: { type: String, default: 'false' },
-    canRegister: { type: String, default: 'true' }
+    canRegister: { type: String, default: 'true' },
+    pricingUrl: { type: String, default: '/planes' }
 });
 
+const showLoginModal = ref(false);
 const isLoggedIn = computed(() => props.authCheck === 'true');
 const hasLogin = computed(() => props.canLogin === 'true');
 const hasRegister = computed(() => props.canRegister === 'true');
 
 const toggleDarkMode = () => {
-    document.documentElement.classList.toggle('dark');
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
 };
+
+import { onMounted } from 'vue';
+onMounted(() => {
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+});
 </script>
 
 <template>
     <div
         class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-200 font-sans transition-colors duration-300">
+        <!-- Login Modal -->
+        <LoginForm v-if="showLoginModal" @close="showLoginModal = false" />
         <div class="bg-primary text-black text-center py-2 text-sm font-semibold tracking-wide">
             10% off online booking! Use the code <span class="font-bold">FOXFIT</span>
         </div>
@@ -38,7 +53,7 @@ const toggleDarkMode = () => {
                 <div class="hidden md:flex items-center gap-8 text-sm font-medium">
                     <a class="nav-link-aqua" href="#">Meet Emily</a>
                     <a class="nav-link-aqua" href="#">FoxFit</a>
-                    <a class="nav-link-aqua" href="#">Plans &amp; Pricing</a>
+                    <a :href="pricingUrl" class="nav-link-aqua">Plans & Pricing</a>
                     <a class="nav-link-aqua" href="#">Challenges</a>
                     <a class="nav-link-aqua" href="#">Book a Class</a>
 
@@ -46,8 +61,8 @@ const toggleDarkMode = () => {
                         <a v-if="isLoggedIn" :href="dashboardUrl"
                             class="px-5 py-2.5 bg-primary-dark dark:bg-primary text-white dark:text-primary-dark rounded-full transition-all hover:scale-105">Dashboard</a>
                         <template v-else>
-                            <a :href="loginUrl" class="nav-link-aqua">Log in</a>
-                            <a v-if="hasRegister" :href="registerUrl"
+                            <a href="#" @click.prevent="showLoginModal = true" class="nav-link-aqua">Log in</a>
+                            <a v-if="hasRegister" :href="pricingUrl"
                                 class="px-5 py-2.5 bg-primary-dark dark:bg-primary text-white dark:text-primary-dark rounded-full transition-all hover:scale-105">Join
                                 Now</a>
                         </template>

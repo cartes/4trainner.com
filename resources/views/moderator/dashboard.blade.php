@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Panel de Administración | 4Trainner</title>
+    <title>Panel del Moderador | 4Trainner</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link
@@ -23,7 +23,7 @@
 </script>
 
 <body class="bg-background-light dark:bg-background-dark border-none transition-colors duration-300">
-    <div id="app" data-component="SuperAdminDashboard" data-auth-check="{{ Auth::check() ? 'true' : 'false' }}">
+    <div id="app" data-component="ModeratorDashboard" data-auth-check="{{ Auth::check() ? 'true' : 'false' }}">
     </div>
 </body>
 
