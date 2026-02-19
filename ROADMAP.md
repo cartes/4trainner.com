@@ -7,13 +7,13 @@ Este documento describe la hoja de ruta para completar el desarrollo de la plata
 El objetivo es limpiar la base de código actual y preparar el terreno para las funcionalidades de streaming.
 
 1.  **Unificación de Terminología:**
-    - Renombrar todo el código relacionado con "Trainer" a "Profesor" (o viceversa, pero ser consistente).
-    - Eliminar duplicidad en `routes/api.php` y `routes/web.php`.
-    - Consolidar relaciones `professor_student` y `trainer_student` en una sola tabla (`professor_student` preferiblemente).
+    - [x] Renombrar todo el código relacionado con "Trainer" a "Profesor" (o viceversa, pero ser consistente) - _Completado: UI usa "Personal Trainer", código usa "Trainer" (internamente) y DB usa "profesor"._
+    - [x] Eliminar duplicidad en `routes/api.php` y `routes/web.php`.
+    - [x] Consolidar relaciones `professor_student` y `trainer_student` en una sola tabla (`professor_student` preferiblemente).
 
 2.  **Limpieza de Frontend:**
-    - Verificar que todos los componentes Vue (`resources/js/Components/`) estén correctamente importados y utilizados.
-    - Eliminar componentes no utilizados o redundantes.
+    - [x] Verificar que todos los componentes Vue (`resources/js/Components/`) estén correctamente importados y utilizados.
+    - [x] Eliminar componentes no utilizados o redundantes (`Teacher/*` borrados).
 
 ## Fase 2: Arquitectura de Streaming (Núcleo)
 
