@@ -15,7 +15,26 @@ El objetivo es limpiar la base de código actual y preparar el terreno para las 
     - [x] Verificar que todos los componentes Vue (`resources/js/Components/`) estén correctamente importados y utilizados.
     - [x] Eliminar componentes no utilizados o redundantes (`Teacher/*` borrados).
 
-## Fase 2: Arquitectura de Streaming (Núcleo)
+## Fase 2: Experiencia de Usuario y Gestión (Dashboards)
+
+Consolidar la experiencia de usuario para los diferentes roles y completar las vistas de gestión.
+
+1.  **Dashboard de Alumno (Refinamiento):**
+    - [ ] Asegurar que el dashboard muestre rutinas asignadas, progreso y entrenadores asignados.
+    - [ ] Validar la integración completa con el backend (`StudentController`) y los datos reales.
+    - [ ] Mejorar la experiencia visual y de navegación.
+
+2.  **Configuración de Usuario (Settings):**
+    - [ ] Implementar la ruta `/settings`, controlador (`SettingsController` o similar) y vistas.
+    - [ ] Permitir cambio de contraseña, preferencias de notificación, y detalles de perfil extendidos.
+    - [ ] Asegurar que el enlace en el menú de usuario funcione correctamente.
+
+3.  **Dashboard Super-Admin (Completo):**
+    - [ ] Implementar gestión completa de usuarios (CRUD) con asignación de roles y permisos.
+    - [ ] Gestión de categorías y configuraciones globales del sistema.
+    - [ ] Panel de métricas globales y auditoría de actividad.
+
+## Fase 3: Arquitectura de Streaming (Núcleo)
 
 Implementar los modelos y lógica necesarios para soportar transmisiones en vivo y videos bajo demanda.
 
@@ -34,7 +53,7 @@ Implementar los modelos y lógica necesarios para soportar transmisiones en vivo
     - Endpoint para validar `stream_key` (si se usa un servidor RTMP propio o servicio externo).
     - Webhooks para detectar inicio/fin de transmisión desde OBS.
 
-## Fase 3: Frontend de Streaming (Experiencia de Usuario)
+## Fase 4: Frontend de Streaming (Experiencia de Usuario)
 
 Desarrollar la interfaz para profesores y alumnos.
 
@@ -53,7 +72,7 @@ Desarrollar la interfaz para profesores y alumnos.
     - Implementar reproductor compatible con HLS (`.m3u8`) para streaming.
     - Soporte para reproducción de archivos VOD (MP4/WebM).
 
-## Fase 4: Monetización y Acceso (Futuro)
+## Fase 5: Monetización y Acceso (Futuro)
 
 Asegurar el modelo de negocio.
 
@@ -70,6 +89,9 @@ Asegurar el modelo de negocio.
 | Tarea                             | Prioridad | Estado    |
 | :-------------------------------- | :-------- | :-------- |
 | Refactorización Trainer/Profesor  | Alta      | Pendiente |
+| Dashboard Alumno (Refinamiento)   | Alta      | Pendiente |
+| Configuración de Usuario          | Alta      | Pendiente |
+| Dashboard Super-Admin Completo    | Alta      | Pendiente |
 | Creación de Modelos Channel/Video | Alta      | Pendiente |
 | Integración OBS Básica            | Media     | Pendiente |
 | Dashboard Profesor                | Media     | Pendiente |
