@@ -14,7 +14,11 @@ class AdminDashboardController extends Controller
             $query->where('name', 'super-admin');
         })->count();
 
-        return view('admin.dashboard', compact('totalUsers'));
+        $totalAlumnos = User::role('alumno')->count();
+        $totalProfesores = User::role('profesor')->count();
+        $totalRoutines = \App\Models\Routine::count();
+
+        return view('admin.dashboard', compact('totalUsers', 'totalAlumnos', 'totalProfesores', 'totalRoutines'));
     }
 
     public function users()

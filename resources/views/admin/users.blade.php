@@ -171,7 +171,7 @@
         var usersTable = $('#usersTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: 'http://127.0.0.1:8000/admin/users/data',
+            ajax: '{{ route('admin.users.data') }}',
             columnDefs: [{
                 width: '25%',
                 targets: '_all',
