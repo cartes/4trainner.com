@@ -30,7 +30,7 @@ class StudentController extends Controller
         $totalStudents = $user->students()->count();
         $totalRoutines = $user->routines()->count();
         $totalExercises = Exercise::count();
-        $recentStudents = $user->students()->latest()->take(5)->get();
+        $recentStudents = $user->students()->orderByPivot('created_at', 'desc')->take(5)->get();
         $recentRoutines = $user->routines()->with('exercises')->latest()->take(5)->get();
         $assignedRoutinesCount = $user->routines()
             ->has('students')
