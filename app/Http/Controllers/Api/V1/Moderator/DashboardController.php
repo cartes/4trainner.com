@@ -15,9 +15,16 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $totalUsers = User::count();
-        $totalProfesores = User::role('profesor')->count();
-        $totalAlumnos = User::role('alumno')->count();
-        $totalModerators = User::role('moderador')->count();
+
+        // Optimize: Get all role counts in a single query
+        $roleCounts = Role::whereIn('name', ['profesor', 'alumno', 'moderador'])
+            ->withCount('users')
+            ->get()
+            ->pluck('users_count', 'name');
+
+        $totalProfesores = $roleCounts['profesor'] ?? 0;
+        $totalAlumnos = $roleCounts['alumno'] ?? 0;
+        $totalModerators = $roleCounts['moderador'] ?? 0;
 
         // Recent users (last 10 registered)
         $recentUsers = User::with('roles')
