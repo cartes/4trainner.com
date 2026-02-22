@@ -23,15 +23,8 @@
 </script>
 
 <body class="bg-background-light dark:bg-background-dark border-none transition-colors duration-300">
-    <div id="app"
-         data-component="SuperAdminDashboard"
-         data-auth-check="{{ Auth::check() ? 'true' : 'false' }}"
-         data-stats='@json([
-            "total_users" => $totalUsers,
-            "total_alumnos" => $totalAlumnos,
-            "total_profesores" => $totalProfesores,
-            "total_routines" => $totalRoutines
-         ])'>
+    <div id="app" data-component="SuperAdminDashboard" data-auth-check="{{ Auth::check() ? 'true' : 'false' }}"
+        data-dashboard-data='{{ $dashboardData }}'>
     </div>
 </body>
 

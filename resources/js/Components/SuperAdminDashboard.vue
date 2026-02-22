@@ -1,8 +1,15 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import api from '../services/api';
+import { ref, onMounted, computed } from 'vue';
 import Sidebar from './Sidebar.vue';
 import Topbar from './Topbar.vue';
+
+// Props passed from the blade via data-dashboard-data attribute
+const props = defineProps({
+    dashboardData: {
+        type: String,
+        default: null,
+    },
+});
 
 const dashboardData = ref(null);
 const loading = ref(true);
@@ -22,18 +29,6 @@ const toggleDarkMode = () => {
     }
 };
 
-const fetchDashboard = async () => {
-    try {
-        const response = await api.get('/admin/dashboard');
-        dashboardData.value = response.data;
-    } catch (err) {
-        error.value = 'No se pudo cargar el panel de administración.';
-        console.error(err);
-    } finally {
-        loading.value = false;
-    }
-};
-
 onMounted(() => {
     // Initialize theme
     if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -43,7 +38,20 @@ onMounted(() => {
         isDark.value = false;
         document.documentElement.classList.remove('dark');
     }
-    fetchDashboard();
+
+    // Load data from blade prop (no extra API call needed)
+    try {
+        if (props.dashboardData) {
+            dashboardData.value = JSON.parse(props.dashboardData);
+        } else {
+            error.value = 'No se recibieron datos del servidor.';
+        }
+    } catch (e) {
+        error.value = 'Error al procesar los datos del panel.';
+        console.error('Error parsing dashboardData:', e);
+    } finally {
+        loading.value = false;
+    }
 });
 </script>
 

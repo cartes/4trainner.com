@@ -51,7 +51,8 @@ export const useAuthStore = defineStore("auth", {
 
             try {
                 // Initialize CSRF for Sanctum stateful auth
-                await api.get("/../../sanctum/csrf-cookie");
+                // Use window.location.origin to avoid CORS issues between localhost/127.0.0.1
+                await api.get(`${window.location.origin}/sanctum/csrf-cookie`);
 
                 const { data } = await api.post("/login", credentials);
                 this.setAuth(data.user, data.token);

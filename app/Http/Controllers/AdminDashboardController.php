@@ -16,10 +16,42 @@ class AdminDashboardController extends Controller
 
         $totalAlumnos = User::role('alumno')->count();
         $totalProfesores = User::role('profesor')->count();
+        $totalModerators = User::role('moderador')->count();
         $totalRoutines = \App\Models\Routine::count();
 
-        return view('admin.dashboard', compact('totalUsers', 'totalAlumnos', 'totalProfesores', 'totalRoutines'));
+        $newUsersPerDay = User::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->where('created_at', '>=', now()->subDays(30))
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+
+        $recentUsers = User::with('roles')
+            ->latest()
+            ->take(10)
+            ->get()
+            ->map(fn($u) => [
+                'id' => $u->id,
+                'name' => $u->name,
+                'email' => $u->email,
+                'roles' => $u->getRoleNames()->values(),
+                'created_at' => $u->created_at->diffForHumans(),
+            ]);
+
+        $dashboardData = json_encode([
+            'stats' => [
+                'total_users' => $totalUsers,
+                'total_alumnos' => $totalAlumnos,
+                'total_profesores' => $totalProfesores,
+                'total_moderators' => $totalModerators,
+                'total_routines' => $totalRoutines,
+            ],
+            'new_users_per_day' => $newUsersPerDay,
+            'recent_users' => $recentUsers,
+        ]);
+
+        return view('admin.dashboard', compact('dashboardData'));
     }
+
 
     public function users()
     {
