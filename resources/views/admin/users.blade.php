@@ -264,5 +264,28 @@
         $('#closeModal').on('click', function() {
             $('#editUserModal').addClass('hidden');
         });
+
+        // Controlador de eliminación de usuario
+        $(document).on('click', '.user-delete-btn', function(e) {
+            e.preventDefault();
+            var user_id = $(this).data('id');
+
+            if (confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
+                $.ajax({
+                    url: '/admin/users/' + user_id,
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        alert(response.success);
+                        usersTable.ajax.reload();
+                    },
+                    error: function(response) {
+                        alert('Error al eliminar el usuario.');
+                    }
+                });
+            }
+        });
     </script>
 </x-admin-layout>

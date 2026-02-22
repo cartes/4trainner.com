@@ -12,6 +12,7 @@ import TrainerDashboard from "./Components/TrainerDashboard.vue";
 import StudentDashboard from "./Components/StudentDashboard.vue";
 import ModeratorDashboard from "./Components/ModeratorDashboard.vue";
 import SuperAdminDashboard from "./Components/SuperAdminDashboard.vue";
+import Settings from "./Components/Settings.vue";
 
 const components = {
     Welcome,
@@ -20,6 +21,7 @@ const components = {
     StudentDashboard,
     ModeratorDashboard,
     SuperAdminDashboard,
+    Settings,
 };
 
 window.Alpine = Alpine;
