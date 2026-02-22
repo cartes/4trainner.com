@@ -16,15 +16,12 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         // Load assigned routines with exercises
-        $routines = $user->trainers()
-            ->with(['routines.exercises'])
-            ->get()
-            ->flatMap(fn($trainer) => $trainer->routines)
-            ->unique('id')
-            ->values();
+        $routines = $user->assignedRoutines()
+            ->with(['exercises'])
+            ->get();
 
         // Load trainers assigned to this student
-        $trainers = $user->trainers()->select('id', 'name', 'email')->get();
+        $trainers = $user->trainers()->select('users.id', 'users.name', 'users.email')->get();
 
         return response()->json([
             'user' => [

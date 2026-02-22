@@ -8,6 +8,9 @@ use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index(Request $request)
     {
         if ($request->ajax()) {

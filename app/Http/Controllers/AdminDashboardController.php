@@ -14,7 +14,11 @@ class AdminDashboardController extends Controller
             $query->where('name', 'super-admin');
         })->count();
 
-        return view('admin.dashboard', compact('totalUsers'));
+        $totalAlumnos = User::role('alumno')->count();
+        $totalProfesores = User::role('profesor')->count();
+        $totalRoutines = \App\Models\Routine::count();
+
+        return view('admin.dashboard', compact('totalUsers', 'totalAlumnos', 'totalProfesores', 'totalRoutines'));
     }
 
     public function users()
@@ -165,6 +169,32 @@ class AdminDashboardController extends Controller
             return redirect()->back()
                 ->withErrors(['error' => 'Error al actualizar el usuario. Por favor, intenta nuevamente.'])
                 ->withInput(request()->except('password'));
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            $user->delete();
+
+            if (request()->ajax()) {
+                return response()->json(['success' => 'Usuario eliminado correctamente']);
+            }
+
+            return redirect()->route('admin.users')->with('success', 'Usuario eliminado correctamente');
+
+        } catch (\Exception $e) {
+            \Log::error('Error deleting user', [
+                'user_id' => $id,
+                'error' => $e->getMessage()
+            ]);
+
+            if (request()->ajax()) {
+                return response()->json(['error' => 'Error al eliminar el usuario'], 500);
+            }
+
+            return redirect()->back()->withErrors(['error' => 'Error al eliminar el usuario.']);
         }
     }
 }

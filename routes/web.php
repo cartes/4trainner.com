@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\SettingsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -36,6 +37,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
+    Route::patch('/settings', [SettingsController::class, 'update'])->name('settings.update');
 });
 
 Route::middleware(['auth', 'role:super-admin'])->group(function () {
@@ -45,7 +49,8 @@ Route::middleware(['auth', 'role:super-admin'])->group(function () {
     Route::get('admin/users/data', [AdminDashboardController::class, 'data'])->name('admin.users.data');
     Route::get('admin/users/{id}/edit', [AdminDashboardController::class, 'edit'])->name('admin.users.edit');
     Route::put('admin/users/{id}', [AdminDashboardController::class, 'update'])->name('admin.users.update');
-    Route::get('admin/categories', [AdminDashboardController::class, 'categories'])->name('admin.categories');
+    Route::delete('admin/users/{id}', [AdminDashboardController::class, 'destroy'])->name('admin.users.destroy');
+    Route::resource('admin/categories', \App\Http\Controllers\CategoryController::class)->names('admin.categories');
 });
 
 

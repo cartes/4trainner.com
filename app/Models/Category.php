@@ -11,9 +11,14 @@ class Category extends Model
 
     protected $fillable = ['name', 'slug', 'parent_id', 'order'];
 
+    public function children()
+    {
+        return $this->hasMany(Category::class, 'parent_id')->orderBy('order');
+    }
+
     public function subcategories()
     {
-        return $this->hasMany(Category::class, 'parent_id')->orderBy('orden');
+        return $this->children();
     }
 
     public function parent()

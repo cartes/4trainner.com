@@ -94,4 +94,14 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'professor_student', 'student_id', 'professor_id')
             ->withTimestamps();
     }
+
+    /**
+     * Get the routines assigned to this student.
+     */
+    public function assignedRoutines()
+    {
+        return $this->belongsToMany(Routine::class, 'user_routine', 'user_id', 'routine_id')
+            ->withPivot('assigned_by', 'is_active')
+            ->withTimestamps();
+    }
 }
