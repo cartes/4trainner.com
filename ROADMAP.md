@@ -64,9 +64,9 @@ Implementar los modelos y lógica necesarios para soportar transmisiones en vivo
     - [x] Propiedades: `title`, `description`, `status` (live, vod, processing), `file_path`, `thumbnail_path`, `duration`.
 
 3.  **Integración con OBS (Backend):**
-    - Generación de `stream_key` única por canal.
-    - Endpoint para validar `stream_key` (si se usa un servidor RTMP propio o servicio externo).
-    - Webhooks para detectar inicio/fin de transmisión desde OBS.
+    - [x] Generación de `stream_key` única por canal.
+    - [x] Endpoint para validar `stream_key` (si se usa un servidor RTMP propio o servicio externo).
+    - [x] Webhooks para detectar inicio/fin de transmisión desde OBS.
 
 ## Fase 4: Frontend de Streaming (Experiencia de Usuario)
 
