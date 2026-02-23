@@ -17,6 +17,10 @@ Route::prefix('v1')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
 });
 
+// OBS / RTMP Webhooks (Public but secured by stream_key)
+Route::post('/webhooks/obs/on_publish', [\App\Http\Controllers\Api\ObsWebhookController::class, 'onPublish']);
+Route::post('/webhooks/obs/on_publish_done', [\App\Http\Controllers\Api\ObsWebhookController::class, 'onPublishDone']);
+
 // Protected routes
 Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     // Authentication
@@ -57,6 +61,11 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::middleware('role:super-admin')->group(function () {
         Route::apiResource('users', UserController::class);
         Route::get('/admin/dashboard', [\App\Http\Controllers\Api\V1\Admin\DashboardController::class, 'index']);
+        Route::get('/admin/stats', [\App\Http\Controllers\Api\V1\Admin\DashboardController::class, 'stats']);
+        Route::get('/admin/recent-activity', [\App\Http\Controllers\Api\V1\Admin\DashboardController::class, 'recentActivity']);
     });
 
+    // Chat Streaming Endpoints
+    Route::get('/videos/{video}/chat', [\App\Http\Controllers\Api\V1\ChatController::class, 'index']);
+    Route::post('/videos/{video}/chat', [\App\Http\Controllers\Api\V1\ChatController::class, 'store']);
 });

@@ -11,13 +11,15 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles; // Importar el trait HasRoles
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 use App\Models\UserMeta;
 use App\Models\StudentProgress;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRoles, SoftDeletes, HasApiTokens;
+    use HasFactory, Notifiable, HasRoles, SoftDeletes, HasApiTokens, LogsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -59,6 +61,15 @@ class User extends Authenticatable
     public function meta()
     {
         return $this->hasMany(UserMeta::class);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs()
+            ->useLogName('user');
     }
 
     /**
@@ -104,5 +115,13 @@ class User extends Authenticatable
         return $this->belongsToMany(Routine::class, 'user_routine', 'user_id', 'routine_id')
             ->withPivot('assigned_by', 'is_active')
             ->withTimestamps();
+    }
+
+    /**
+     * Get the channels owned by the user (trainer).
+     */
+    public function channels(): HasMany
+    {
+        return $this->hasMany(Channel::class);
     }
 }

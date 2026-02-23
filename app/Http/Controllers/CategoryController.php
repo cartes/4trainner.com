@@ -13,12 +13,12 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $categories = Category::with('children')->get();
-            return response()->json(['data' => $categories]);
+        if ($request->wantsJson() || $request->ajax()) {
+            $categories = Category::with('children')->whereNull('parent_id')->orderBy('order')->get();
+            return response()->json($categories);
         }
 
-        return view('admin.categories.index');
+        return view('admin.vue_settings');
     }
 
     public function store(Request $request)
@@ -30,14 +30,14 @@ class CategoryController extends Controller
             'order' => 'integer',
         ]);
 
-        Category::create([
+        $category = Category::create([
             'name' => $request->name,
             'slug' => Str::slug($request->name),
             'parent_id' => $request->parent_id,
             'order' => $request->order ?? 0,
         ]);
 
-        return redirect()->route('admin.categories.index')->with('success', 'Categoría creada exitosamente.');
+        return response()->json(['success' => true, 'message' => 'Categoría creada exitosamente.', 'category' => $category]);
     }
 
     public function update(Request $request, Category $category)
@@ -56,14 +56,14 @@ class CategoryController extends Controller
             'order' => $request->order,
         ]);
 
-        return redirect()->route('admin.categories.index')->with('success', 'Categoría actualizada exitosamente.');
+        return response()->json(['success' => true, 'message' => 'Categoría actualizada exitosamente.', 'category' => $category]);
     }
 
 
     public function destroy(Category $category)
     {
         $category->delete();
-        return redirect()->route('admin.categories.index')->with('success', 'Categoría eliminada exitosamente.');
+        return response()->json(['success' => true, 'message' => 'Categoría eliminada exitosamente.']);
     }
 
 }

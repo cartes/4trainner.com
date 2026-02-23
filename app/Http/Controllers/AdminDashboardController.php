@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class AdminDashboardController extends Controller
 {
@@ -33,7 +35,7 @@ class AdminDashboardController extends Controller
                 'id' => $u->id,
                 'name' => $u->name,
                 'email' => $u->email,
-                'roles' => $u->getRoleNames()->values(),
+                'roles' => $u->roles->pluck('name'),
                 'created_at' => $u->created_at->diffForHumans(),
             ]);
 
@@ -55,152 +57,99 @@ class AdminDashboardController extends Controller
 
     public function users()
     {
-        $users = User::whereDoesntHave('roles', function ($query) {
-            $query->where('name', 'super-admin');
-        })->get();
-
-        return view('admin.users', compact('users'));
+        // Now returns the new Vue-based blade
+        return view('admin.vue_users');
     }
 
-    // metodo store
+    // Ajax endpoint to feed the Vue component with all non-super-admin users
+    public function data(Request $request)
+    {
+        $users = User::with('meta')
+            ->whereDoesntHave('roles', function ($query) {
+                $query->where('name', 'super-admin');
+            })->latest()->get()->map(function ($user) {
+                $phoneMeta = $user->meta->where('meta_key', 'phone')->first();
+                return [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'phone' => $phoneMeta ? $phoneMeta->meta_value : '',
+                    'roles' => $user->roles->pluck('name'),
+                    'created_at' => clone $user->created_at->format('Y-m-d H:i:s'),
+                    'created_at_human' => $user->created_at->diffForHumans(),
+                ];
+            });
+
+        return response()->json($users);
+    }
+
+    // Store via JSON API
     public function store(Request $request)
     {
-        session(['active_tab' => 'create']);
-
         $val = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
             'role' => 'required',
-            'phone' => 'required',
+            'phone' => 'nullable|string|max:20',
         ]);
 
         try {
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => bcrypt($request->password),
+                'password' => Hash::make($request->password),
             ]);
 
-            $user->assignRole($request->role); // asignar rol
+            $user->assignRole($request->role);
 
-            // crear meta dato phone que va guardado en la tabla user_meta
-            $user->meta()->create([
-                'meta_key' => 'phone',
-                'meta_value' => $request->phone,
-            ]);
-
-            return redirect()->route('admin.users')->with(
-                ['success' => 'User created successfully'],
-                ['active_tab' => 'create']
-            );
-
-        } catch (\Exception $e) {
-            \Log::error('Error creating user', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-                'request_data' => $request->except('password')
-            ]);
-
-            return redirect()->back()
-                ->withErrors(['error' => 'Error al crear el usuario. Por favor, intenta nuevamente.'])
-                ->withInput($request->except('password'));
-        }
-
-    }
-
-    //metodo data que alimenta un ajax con los usuarios
-    public function data()
-    {
-        $users = User::whereDoesntHave('roles', function ($query) {
-            $query->where('name', 'super-admin');
-        })->get();
-
-        return datatables()->of($users)
-            ->addColumn('role', function ($user) {
-                return $user->getRoleNames()->implode(', '); // Imprimir los nombres de los roles
-            })
-            ->addColumn('created_at_formatted', function ($user) {
-                return Carbon::parse($user->created_at)->format('d-m-Y');
-            })
-            ->addColumn('remaining_days', function ($user) {
-                $createdDate = Carbon::parse($user->created_at);
-                $daysRemaining = $createdDate->diffForHumans($createdDate->copy()->addMonth(), true);
-
-                return $daysRemaining;
-            })
-            ->addColumn('actions', function ($user) {
-                return '
-                    <a href="#" data-id="' . $user->id . '" class="user-edit-btn bg-blue-500 rounded hover:bg-blue-700 font-bold text-white py-2 px-5">Editar</a>
-                    <a href="#" data-id="' . $user->id . '" class="user-delete-btn bg-red-500 rounded hover:bg-red-700 font-bold text-white py-2 px-5 ml-2">Eliminar</a>
-                ';
-            })
-            ->rawColumns(['actions'])
-            ->make(true);
-    }
-
-    //metodo edit
-    public function edit($id)
-    {
-        $user = User::with('meta')->find($id);
-        $phoneMeta = $user->meta->where('meta_key', 'phone')->first();
-        $role = $user->getRoleNames()->first();
-
-        return response()->json([
-            'id' => $user->id,
-            'name' => $user->name,
-            'email' => $user->email,
-            'phone' => $phoneMeta ? $phoneMeta->meta_value : null,
-            'role' => $role,
-        ]);
-    }
-
-    public function update($id)
-    {
-        session(['active_tab' => 'edit']);
-
-        $val = request()->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
-            'role' => 'required',
-            'phone' => 'required',
-        ]);
-
-        try {
-            $user = User::find($id);
-            $user->update([
-                'name' => request()->name,
-                'email' => request()->email,
-            ]);
-
-            $user->syncRoles([request()->role]); // sincronizar rol
-
-            $phoneMeta = $user->meta->where('meta_key', 'phone')->first();
-            if ($phoneMeta) {
-                $phoneMeta->update(['meta_value' => request()->phone]);
-            } else {
+            if ($request->has('phone') && !empty($request->phone)) {
                 $user->meta()->create([
                     'meta_key' => 'phone',
-                    'meta_value' => request()->phone,
+                    'meta_value' => $request->phone,
                 ]);
             }
 
-            return redirect()->route('admin.users')->with(
-                ['success' => 'User updated successfully'],
-                ['active_tab' => 'edit']
-            );
-
+            return response()->json(['success' => true, 'message' => 'User created successfully', 'user' => $user]);
         } catch (\Exception $e) {
-            \Log::error('Error updating user', [
-                'user_id' => $id,
+            Log::error('Error creating user', [
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-                'request_data' => request()->except('password')
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json(['success' => false, 'message' => 'Error creating user'], 500);
+        }
+    }
+
+
+    public function update(Request $request, $id)
+    {
+        $val = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'role' => 'required',
+            'phone' => 'nullable|string|max:20',
+        ]);
+
+        try {
+            $user = User::findOrFail($id);
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
             ]);
 
-            return redirect()->back()
-                ->withErrors(['error' => 'Error al actualizar el usuario. Por favor, intenta nuevamente.'])
-                ->withInput(request()->except('password'));
+            $user->syncRoles([$request->role]);
+
+            $phoneMeta = $user->meta()->firstOrCreate(['meta_key' => 'phone']);
+            $phoneMeta->update(['meta_value' => $request->phone]);
+
+            return response()->json(['success' => true, 'message' => 'User updated successfully']);
+
+        } catch (\Exception $e) {
+            Log::error('Error updating user', [
+                'user_id' => $id,
+                'error' => $e->getMessage()
+            ]);
+            return response()->json(['success' => false, 'message' => 'Error updating user'], 500);
         }
     }
 
@@ -210,23 +159,13 @@ class AdminDashboardController extends Controller
             $user = User::findOrFail($id);
             $user->delete();
 
-            if (request()->ajax()) {
-                return response()->json(['success' => 'Usuario eliminado correctamente']);
-            }
-
-            return redirect()->route('admin.users')->with('success', 'Usuario eliminado correctamente');
-
+            return response()->json(['success' => true, 'message' => 'User deleted successfully']);
         } catch (\Exception $e) {
-            \Log::error('Error deleting user', [
+            Log::error('Error deleting user', [
                 'user_id' => $id,
                 'error' => $e->getMessage()
             ]);
-
-            if (request()->ajax()) {
-                return response()->json(['error' => 'Error al eliminar el usuario'], 500);
-            }
-
-            return redirect()->back()->withErrors(['error' => 'Error al eliminar el usuario.']);
+            return response()->json(['success' => false, 'message' => 'Error deleting user'], 500);
         }
     }
 }

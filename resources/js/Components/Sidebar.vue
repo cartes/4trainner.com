@@ -29,6 +29,11 @@ const menuGroups = computed(() => {
     const gestionItems = [
         { name: 'Panel Principal', icon: 'dashboard', route: '/dashboard' }
     ];
+    if (authStore.isAdmin) {
+        gestionItems.push({ name: 'Usuarios', icon: 'manage_accounts', route: '/admin/users' });
+        gestionItems.push({ name: 'Config. del Sistema', icon: 'settings_applications', route: '/admin/settings' });
+        gestionItems.push({ name: 'Auditoría', icon: 'admin_panel_settings', route: '/admin/audit' });
+    }
     if (authStore.isTrainer || authStore.isAdmin) {
         gestionItems.push({ name: 'Mis Alumnos', icon: 'groups', route: '/trainer/dashboard' });
     }
@@ -50,7 +55,8 @@ const menuGroups = computed(() => {
     // Comunidad Group
     const comunidadItems = [
         { name: 'Progreso', icon: 'trending_up', route: '/student/progress' },
-        { name: 'Retos', icon: 'emoji_events', route: '/challenges' }
+        { name: 'Retos', icon: 'emoji_events', route: '/challenges' },
+        { name: 'FoxFit TV', icon: 'live_tv', route: '/channels' }
     ];
     groups.push({ name: 'COMUNIDAD', items: comunidadItems });
 

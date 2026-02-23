@@ -23,8 +23,16 @@
 </script>
 
 <body class="bg-background-light dark:bg-background-dark border-none transition-colors duration-300">
+    @php
+        $authUserJson = json_encode([
+            'id' => Auth::user()->id,
+            'name' => Auth::user()->name,
+            'email' => Auth::user()->email,
+            'roles' => Auth::user()->getRoleNames()->values(),
+        ]);
+    @endphp
     <div id="app" data-component="SuperAdminDashboard" data-auth-check="{{ Auth::check() ? 'true' : 'false' }}"
-        data-dashboard-data='{{ $dashboardData }}'>
+        data-auth-user='{!! $authUserJson !!}' data-dashboard-data='{!! $dashboardData !!}'>
     </div>
 </body>
 

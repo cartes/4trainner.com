@@ -1,21 +1,20 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useAuthStore } from '../stores/auth';
 import Sidebar from './Sidebar.vue';
 import Topbar from './Topbar.vue';
 
-// Props passed from the blade via data-dashboard-data attribute
+// Props passed from the blade
 const props = defineProps({
-    dashboardData: {
-        type: String,
-        default: null,
-    },
+    dashboardData: { type: String, default: null },
+    authUser: { type: String, default: null },
 });
 
+const authStore = useAuthStore();
 const dashboardData = ref(null);
 const loading = ref(true);
 const error = ref(null);
 
-// Theme state
 const isDark = ref(false);
 
 const toggleDarkMode = () => {
@@ -30,7 +29,7 @@ const toggleDarkMode = () => {
 };
 
 onMounted(() => {
-    // Initialize theme
+    // Theme
     if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         isDark.value = true;
         document.documentElement.classList.add('dark');
@@ -39,7 +38,18 @@ onMounted(() => {
         document.documentElement.classList.remove('dark');
     }
 
-    // Load data from blade prop (no extra API call needed)
+    // Hydrate authStore with server-side user data (web session login)
+    if (props.authUser && !authStore.user) {
+        try {
+            const user = JSON.parse(props.authUser);
+            authStore.user = user;
+            authStore.isAuthenticated = true;
+        } catch (e) {
+            console.error('Error parsing authUser:', e);
+        }
+    }
+
+    // Load dashboard data from blade prop
     try {
         if (props.dashboardData) {
             dashboardData.value = JSON.parse(props.dashboardData);

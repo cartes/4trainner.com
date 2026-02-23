@@ -20,33 +20,48 @@ El objetivo es limpiar la base de código actual y preparar el terreno para las 
 Consolidar la experiencia de usuario para los diferentes roles y completar las vistas de gestión.
 
 1.  **Dashboard de Alumno (Refinamiento):**
-    - [ ] Asegurar que el dashboard muestre rutinas asignadas, progreso y entrenadores asignados.
-    - [ ] Validar la integración completa con el backend (`StudentController`) y los datos reales.
-    - [ ] Mejorar la experiencia visual y de navegación.
+    - [x] Asegurar que el dashboard muestre rutinas asignadas, progreso y entrenadores asignados.
+    - [x] Validar la integración completa con el backend (`StudentController`) y los datos reales.
+    - [x] Refactor del Front (Evitar layout redundante de navegación en Vistas Vue independientes).
 
-2.  **Configuración de Usuario (Settings):**
-    - [ ] Implementar la ruta `/settings`, controlador (`SettingsController` o similar) y vistas.
-    - [ ] Permitir cambio de contraseña, preferencias de notificación, y detalles de perfil extendidos.
-    - [ ] Asegurar que el enlace en el menú de usuario funcione correctamente.
+- [x] Ocultar Play/Overlays dinámicos del reproductor para usar HTML5 Video controls.
+- [x] Configuración de Transmisiones (Ficticias).
+
+### Fase 5: Privacidad y Accesos Rápidos
+
+- [x] Añadir enlace de FoxFit TV en menús laterales.
+- [x] Crear Hero Banner promocional en el Dashboard del Estudiante apuntando a Canales.
+- [x] Montar Controlador Privado para hacer streaming local de Video bloqueando el acceso por URL pública a no-usuarios.
+- [x] Refactorizar la UI `ChannelPlayer` para incrustar etiqueta nativa HTML5 validada en Storage.
+
+### Próximos Pasos (Pendientes)
+
+- [ ] Panel de Control del Entrenador (Para emitir en Vivo).
+- [x] Integración con OBS (Backend)
+    - Generación de `stream_key` única por canal.
+    - Endpoint para validar `stream_key` (si se usa un servidor RTMP propio o servicio externo).
+    - Webhooks para detectar inicio/fin de transmisión desde OBS.
+- [x] Permitir cambio de contraseña, preferencias de notificación, y detalles de perfil extendidos.
+- [x] Asegurar que el enlace en el menú de usuario funcione correctamente.
 
 3.  **Dashboard Super-Admin (Completo):**
-    - [ ] Implementar gestión completa de usuarios (CRUD) con asignación de roles y permisos.
-    - [ ] Gestión de categorías y configuraciones globales del sistema.
-    - [ ] Panel de métricas globales y auditoría de actividad.
+    - [x] Implementar gestión completa de usuarios (CRUD) con asignación de roles y permisos.
+    - [x] Gestión de categorías y configuraciones globales del sistema.
+    - [x] Panel de métricas globales y auditoría de actividad.
 
 ## Fase 3: Arquitectura de Streaming (Núcleo)
 
 Implementar los modelos y lógica necesarios para soportar transmisiones en vivo y videos bajo demanda.
 
-1.  **Modelo `Channel` (Canales):**
-    - Crear migración y modelo `Channel`.
-    - Relación: Un `User` (Profesor) tiene uno o más `Channels`.
-    - Propiedades: `name`, `description`, `slug`, `cover_image`, `stream_key`.
+1.  ✅ **Modelo `Channel` (Canales):**
+    - [x] Crear migración y modelo `Channel`.
+    - [x] Relación: Un `User` (Profesor) tiene uno o más `Channels`.
+    - [x] Propiedades: `name`, `description`, `slug`, `cover_image`, `stream_key`.
 
-2.  **Modelo `Video` / `Stream`:**
-    - Crear migración y modelo `Video`.
-    - Relación: Un `Channel` tiene muchos `Videos`.
-    - Propiedades: `title`, `description`, `status` (live, vod, processing), `file_path`, `thumbnail_path`, `duration`.
+2.  ✅ **Modelo `Video` / `Stream`:**
+    - [x] Crear migración y modelo `Video`.
+    - [x] Relación: Un `Channel` tiene muchos `Videos`.
+    - [x] Propiedades: `title`, `description`, `status` (live, vod, processing), `file_path`, `thumbnail_path`, `duration`.
 
 3.  **Integración con OBS (Backend):**
     - Generación de `stream_key` única por canal.
@@ -86,13 +101,13 @@ Asegurar el modelo de negocio.
 
 ## Estado de Prioridad
 
-| Tarea                             | Prioridad | Estado    |
-| :-------------------------------- | :-------- | :-------- |
-| Refactorización Trainer/Profesor  | Alta      | Pendiente |
-| Dashboard Alumno (Refinamiento)   | Alta      | Pendiente |
-| Configuración de Usuario          | Alta      | Pendiente |
-| Dashboard Super-Admin Completo    | Alta      | Pendiente |
-| Creación de Modelos Channel/Video | Alta      | Pendiente |
-| Integración OBS Básica            | Media     | Pendiente |
-| Dashboard Profesor                | Media     | Pendiente |
-| Reproductor de Video              | Alta      | Pendiente |
+| Tarea                             | Prioridad | Estado         |
+| :-------------------------------- | :-------- | :------------- |
+| Refactorización Trainer/Profesor  | Alta      | Pendiente      |
+| Dashboard Alumno (Refinamiento)   | Alta      | ✅ Completado  |
+| Configuración de Usuario          | Alta      | ✅ Completado  |
+| Dashboard Super-Admin Completo    | Alta      | ✅ Completado  |
+| Creación de Modelos Channel/Video | Alta      | ✅ Completado  |
+| Integración OBS Básica            | Media     | Pendiente      |
+| Dashboard Profesor                | Media     | Pendiente      |
+| Reproductor de Video              | Alta      | 🚧 En Progreso |

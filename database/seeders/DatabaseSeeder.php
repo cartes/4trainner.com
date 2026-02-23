@@ -58,5 +58,11 @@ class DatabaseSeeder extends Seeder
 
             $alumno->assignRole($alumnoRole);
         }
+
+        // Llamar a los Seeders del módulo de Streaming (FoxFit TV)
+        $this->call([
+            ChannelSeeder::class,
+            VideoSeeder::class,
+        ]);
     }
 }

@@ -23,7 +23,8 @@
 </script>
 
 <body class="bg-background-light dark:bg-background-dark border-none transition-colors duration-300">
-    <div id="app" data-component="StudentDashboard" data-auth-check="{{ Auth::check() ? 'true' : 'false' }}">
+    <div id="app" data-component="StudentDashboard" data-auth-check="{{ Auth::check() ? 'true' : 'false' }}"
+        data-auth-user='{!! $authUser !!}' data-dashboard-data='{!! $dashboardData !!}'>
     </div>
 </body>
 

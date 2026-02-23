@@ -37,6 +37,7 @@ class StudentController extends Controller
             ->count();
 
         return response()->json([
+            'channel' => $user->channels()->first(),
             'stats' => [
                 'total_students' => $totalStudents,
                 'total_routines' => $totalRoutines,

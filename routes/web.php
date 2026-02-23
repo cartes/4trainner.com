@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\StreamingController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,14 +20,18 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
 
 // Trainer dashboard
-Route::get('/trainer/dashboard', function () {
-    return view('trainer.dashboard');
-})->middleware(['auth', 'verified', 'role:profesor'])->name('trainer.dashboard');
+Route::middleware(['auth', 'verified', 'role:profesor'])->group(function () {
+    Route::get('/trainer/dashboard', function () {
+        return view('trainer.dashboard');
+    })->name('trainer.dashboard');
+
+    // Live Studio
+    Route::get('/trainer/studio', [\App\Http\Controllers\TrainerStudioController::class, 'index'])->name('trainer.studio');
+});
 
 // Student dashboard
-Route::get('/student/dashboard', function () {
-    return view('student.dashboard');
-})->middleware(['auth', 'verified', 'role:alumno|student'])->name('student.dashboard');
+Route::get('/student/dashboard', [\App\Http\Controllers\StudentDashboardController::class, 'index'])
+    ->middleware(['auth', 'verified', 'role:alumno|student'])->name('student.dashboard');
 
 // Moderator dashboard
 Route::get('/moderator/dashboard', function () {
@@ -40,6 +45,13 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
     Route::patch('/settings', [SettingsController::class, 'update'])->name('settings.update');
+
+    // Streaming
+    Route::get('/channels', [\App\Http\Controllers\StreamingController::class, 'index'])->name('channels.index');
+    Route::get('/channels/{channel:slug}', [\App\Http\Controllers\StreamingController::class, 'show'])->name('channels.show');
+
+    // Private Video Streaming VOD
+    Route::get('/stream/{video}', [\App\Http\Controllers\PrivateStreamController::class, 'stream'])->name('stream.video');
 });
 
 Route::middleware(['auth', 'role:super-admin'])->group(function () {
@@ -51,6 +63,16 @@ Route::middleware(['auth', 'role:super-admin'])->group(function () {
     Route::put('admin/users/{id}', [AdminDashboardController::class, 'update'])->name('admin.users.update');
     Route::delete('admin/users/{id}', [AdminDashboardController::class, 'destroy'])->name('admin.users.destroy');
     Route::resource('admin/categories', \App\Http\Controllers\CategoryController::class)->names('admin.categories');
+
+    // Global Settings
+    Route::get('admin/settings', [\App\Http\Controllers\Admin\SystemSettingController::class, 'index'])->name('admin.settings');
+    Route::get('admin/settings/data', [\App\Http\Controllers\Admin\SystemSettingController::class, 'getData'])->name('admin.settings.data');
+    Route::post('admin/settings/batch', [\App\Http\Controllers\Admin\SystemSettingController::class, 'updateBatch'])->name('admin.settings.batch');
+
+    // Audit and Metrics
+    Route::get('admin/audit', [\App\Http\Controllers\Admin\AuditController::class, 'index'])->name('admin.audit');
+    Route::get('admin/audit/logs', [\App\Http\Controllers\Admin\AuditController::class, 'logs'])->name('admin.audit.logs');
+    Route::get('admin/audit/metrics', [\App\Http\Controllers\Admin\AuditController::class, 'metrics'])->name('admin.audit.metrics');
 });
 
 

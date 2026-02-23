@@ -249,7 +249,62 @@ onMounted(() => {
                                     {{ dashStats?.stats?.total_exercises ?? exercises.length }}
                                 </p>
                                 <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-2">
-                                    Ejercicios</p>
+                                    Ejercicios
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- OBS Studio Panel -->
+                        <div v-if="dashStats?.channel"
+                            class="mb-12 glass-panel rounded-[3rem] border border-slate-200 dark:border-white/5 overflow-hidden shadow-2xl relative">
+                            <!-- Background elements -->
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r from-red-600/10 to-transparent pointer-events-none">
+                            </div>
+
+                            <div
+                                class="px-8 md:px-12 py-10 relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-3 mb-4">
+                                        <span
+                                            class="px-3 py-1 bg-red-500 text-white text-[10px] font-black tracking-widest uppercase rounded-full flex items-center gap-2 shadow-lg shadow-red-500/20">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                                            Transmitir
+                                        </span>
+                                        <h2
+                                            class="text-3xl font-display font-black text-primary-dark dark:text-white uppercase tracking-tight italic">
+                                            Mi Estudio <span class="text-primary not-italic">En Vivo</span>
+                                        </h2>
+                                    </div>
+                                    <p class="text-slate-500 dark:text-slate-400 font-medium max-w-xl">
+                                        Configura tu software de transmisión (ej. OBS Studio) con estos datos para
+                                        empezar a emitir clases en directo a tus alumnos en FoxFit TV.
+                                    </p>
+                                </div>
+
+                                <div
+                                    class="w-full md:w-auto bg-slate-100 dark:bg-slate-900/50 p-6 rounded-3xl border border-slate-200 dark:border-white/10 space-y-4">
+                                    <div>
+                                        <span
+                                            class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Tu
+                                            Clave de Transmisión</span>
+                                        <div
+                                            class="flex items-center gap-2 bg-white dark:bg-slate-800 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-white/5">
+                                            <code
+                                                class="text-primary-dark dark:text-white font-bold text-sm flex-1 truncate max-w-[150px]">{{ dashStats.channel.stream_key || 'No disponible' }}</code>
+                                            <button @click="navigator.clipboard.writeText(dashStats.channel.stream_key)"
+                                                class="text-primary hover:text-primary-dark transition-colors px-2"
+                                                title="Copiar Clave">
+                                                <span class="material-icons text-lg">content_copy</span>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <a href="/trainer/studio"
+                                        class="w-full shrink-0 bg-red-500 text-white hover:bg-red-600 transition-colors px-6 py-3 rounded-xl shadow-lg shadow-red-500/20 font-bold uppercase tracking-wide flex items-center justify-center gap-2 hover:scale-105 duration-300">
+                                        Entrar al Estudio
+                                    </a>
+                                </div>
                             </div>
                         </div>
 

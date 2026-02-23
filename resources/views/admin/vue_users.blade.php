@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Configuración | 4Trainner</title>
+    <title>Usuarios | 4Trainner Admin</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link
@@ -30,12 +30,11 @@
             'name' => Auth::user()->name,
             'email' => Auth::user()->email,
             'roles' => Auth::user()->getRoleNames()->values(),
-            'meta' => $metaData ?? [],
         ]);
     @endphp
 
-    <div id="app" data-component="Settings" data-user='{!! $authUserJson !!}'
-        data-status="{{ session('status') }}">
+    <div id="app" data-component="AdminUsers" data-auth-check="{{ Auth::check() ? 'true' : 'false' }}"
+        data-auth-user='{!! $authUserJson !!}'>
     </div>
 </body>
 

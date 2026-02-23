@@ -13,6 +13,12 @@ import StudentDashboard from "./Components/StudentDashboard.vue";
 import ModeratorDashboard from "./Components/ModeratorDashboard.vue";
 import SuperAdminDashboard from "./Components/SuperAdminDashboard.vue";
 import Settings from "./Components/Settings.vue";
+import AdminUsers from "./Components/Admin/AdminUsers.vue";
+import AdminSettings from "./Components/Admin/AdminSettings.vue";
+import AdminAudit from "./Components/Admin/AdminAudit.vue";
+import ChannelList from "./Components/Student/ChannelList.vue";
+import ChannelPlayer from "./Components/Student/ChannelPlayer.vue";
+import TrainerStudio from "./Components/Trainer/TrainerStudio.vue";
 
 const components = {
     Welcome,
@@ -22,6 +28,12 @@ const components = {
     ModeratorDashboard,
     SuperAdminDashboard,
     Settings,
+    AdminUsers,
+    AdminSettings,
+    AdminAudit,
+    ChannelList,
+    ChannelPlayer,
+    TrainerStudio,
 };
 
 window.Alpine = Alpine;
