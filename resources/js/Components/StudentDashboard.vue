@@ -3,6 +3,7 @@ import { ref, onMounted, computed } from 'vue';
 import { useAuthStore } from '../stores/auth';
 import Sidebar from './Sidebar.vue';
 import Topbar from './Topbar.vue';
+import api from '@/services/api.js';
 
 // Props injected from the blade
 const props = defineProps({
@@ -15,6 +16,7 @@ const dashboardData = ref(null);
 const loading = ref(true);
 const error = ref(null);
 const isDark = ref(false);
+const upcomingClasses = ref([]);
 
 const toggleDarkMode = () => {
     isDark.value = !isDark.value;
@@ -70,6 +72,14 @@ onMounted(() => {
         console.error('Error parsing dashboardData:', e);
     } finally {
         loading.value = false;
+    }
+
+    // Load upcoming classes
+    try {
+        const { data } = await api.get('/student/schedule');
+        upcomingClasses.value = data;
+    } catch {
+        // Non-critical, ignore
     }
 });
 </script>
@@ -182,6 +192,43 @@ onMounted(() => {
                                 {{ dashboardData.stats.goal_percent }}%</p>
                             <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-2">Meta Mensual
                             </p>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Classes -->
+                    <div v-if="upcomingClasses.length > 0" class="mb-12">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-2xl font-display font-black text-primary-dark dark:text-white uppercase tracking-tight">
+                                <span class="material-icons text-primary align-middle mr-2">event</span>
+                                Próximas Clases
+                            </h2>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div v-for="cls in upcomingClasses" :key="cls.id"
+                                class="p-5 bg-white dark:bg-slate-800/60 rounded-3xl border border-slate-100 dark:border-white/5 hover:shadow-lg transition-shadow">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center flex-shrink-0">
+                                        <span class="material-icons text-primary">event</span>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="font-bold text-slate-800 dark:text-white truncate text-sm">{{ cls.title }}</p>
+                                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                                            {{ new Date(cls.scheduled_at).toLocaleString('es-CL', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) }}
+                                        </p>
+                                        <p v-if="cls.channel" class="text-xs text-primary mt-1 font-semibold">{{ cls.channel.name }}</p>
+                                        <p v-if="cls.trainer" class="text-xs text-slate-400 mt-0.5">Prof. {{ cls.trainer.name }}</p>
+                                    </div>
+                                </div>
+                                <div class="mt-3 flex items-center justify-between">
+                                    <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">
+                                        {{ cls.duration_minutes }} min
+                                    </span>
+                                    <a href="/channels"
+                                        class="text-[10px] font-black uppercase tracking-widest text-primary hover:underline flex items-center gap-1">
+                                        Ir al canal <span class="material-icons text-[12px]">arrow_forward</span>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

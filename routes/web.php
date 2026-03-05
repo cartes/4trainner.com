@@ -27,6 +27,9 @@ Route::middleware(['auth', 'verified', 'role:profesor'])->group(function () {
 
     // Live Studio
     Route::get('/trainer/studio', [\App\Http\Controllers\TrainerStudioController::class, 'index'])->name('trainer.studio');
+
+    // Agendamiento de clases
+    Route::get('/trainer/schedule', [\App\Http\Controllers\TrainerScheduleController::class, 'index'])->name('trainer.schedule');
 });
 
 // Student dashboard

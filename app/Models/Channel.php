@@ -63,4 +63,9 @@ class Channel extends Model
     {
         return $this->hasMany(Video::class);
     }
+
+    public function scheduledClasses()
+    {
+        return $this->hasMany(ScheduledClass::class);
+    }
 }

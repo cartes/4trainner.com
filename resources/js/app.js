@@ -19,6 +19,7 @@ import AdminAudit from "./Components/Admin/AdminAudit.vue";
 import ChannelList from "./Components/Student/ChannelList.vue";
 import ChannelPlayer from "./Components/Student/ChannelPlayer.vue";
 import TrainerStudio from "./Components/Trainer/TrainerStudio.vue";
+import TrainerSchedule from "./Components/Trainer/TrainerSchedule.vue";
 import ProfilePage from "./Components/ProfilePage.vue";
 
 const components = {
@@ -35,6 +36,7 @@ const components = {
     ChannelList,
     ChannelPlayer,
     TrainerStudio,
+    TrainerSchedule,
     ProfilePage,
 };
 

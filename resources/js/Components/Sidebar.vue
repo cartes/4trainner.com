@@ -49,7 +49,7 @@ const menuGroups = computed(() => {
             name: 'GESTIÓN', items: [
                 { name: 'Panel Principal', icon: 'dashboard',  route: '/trainer/dashboard' },
                 { name: 'Mis Alumnos',     icon: 'groups',     route: '/trainer/dashboard' },
-                { name: 'Agendamiento',    icon: 'event',      route: '/trainer/schedule', badge: 'Próximo' },
+                { name: 'Agendamiento',    icon: 'event',      route: '/trainer/schedule' },
             ]
         });
         groups.push({

@@ -41,11 +41,18 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
         Route::get('/trainer/channel/status', [\App\Http\Controllers\Api\V1\Trainer\ChannelController::class, 'status']);
         Route::post('/trainer/channel/videos', [\App\Http\Controllers\Api\V1\Trainer\ChannelController::class, 'uploadVideo']);
         Route::delete('/trainer/channel/videos/{video}', [\App\Http\Controllers\Api\V1\Trainer\ChannelController::class, 'destroyVideo']);
+
+        // Scheduled classes (trainer CRUD)
+        Route::get('/trainer/schedule', [\App\Http\Controllers\Api\V1\Trainer\ScheduleController::class, 'index']);
+        Route::post('/trainer/schedule', [\App\Http\Controllers\Api\V1\Trainer\ScheduleController::class, 'store']);
+        Route::patch('/trainer/schedule/{scheduledClass}', [\App\Http\Controllers\Api\V1\Trainer\ScheduleController::class, 'update']);
+        Route::delete('/trainer/schedule/{scheduledClass}', [\App\Http\Controllers\Api\V1\Trainer\ScheduleController::class, 'destroy']);
     });
 
     // Student dashboard
     Route::middleware('role:alumno|student')->group(function () {
         Route::get('/student/dashboard', [\App\Http\Controllers\Api\V1\Student\DashboardController::class, 'index']);
+        Route::get('/student/schedule', [\App\Http\Controllers\Api\V1\Student\ScheduleController::class, 'index']);
     });
 
     // Moderator dashboard
