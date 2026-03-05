@@ -63,12 +63,9 @@ export const useAuthStore = defineStore("auth", {
                     },
                 });
 
-                // Fetch user info from API (session is now active)
-                const { data } = await api.get('/user');
-                this.user = data.user;
+                // Session is created — page will fully reload to /dashboard
                 this.isAuthenticated = true;
-                localStorage.setItem('user', JSON.stringify(data.user));
-                return data;
+                return true;
             } catch (error) {
                 this.error = error.response?.data?.message || 'Error al iniciar sesión';
                 throw error;
