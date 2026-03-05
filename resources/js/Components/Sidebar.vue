@@ -25,41 +25,75 @@ const toggleMenu = (groupName) => {
 const menuGroups = computed(() => {
     const groups = [];
 
-    // Core / Gestion Group
-    const gestionItems = [
-        { name: 'Panel Principal', icon: 'dashboard', route: '/dashboard' }
-    ];
+    // ── SUPER-ADMIN ──────────────────────────────────────────────────────────
     if (authStore.isAdmin) {
-        gestionItems.push({ name: 'Usuarios', icon: 'manage_accounts', route: '/admin/users' });
-        gestionItems.push({ name: 'Config. del Sistema', icon: 'settings_applications', route: '/admin/settings' });
-        gestionItems.push({ name: 'Auditoría', icon: 'admin_panel_settings', route: '/admin/audit' });
+        groups.push({
+            name: 'ADMINISTRACIÓN', items: [
+                { name: 'Panel Principal',     icon: 'dashboard',             route: '/admin/dashboard' },
+                { name: 'Usuarios',            icon: 'manage_accounts',       route: '/admin/users' },
+                { name: 'Categorías',          icon: 'category',              route: '/admin/categories' },
+                { name: 'Config. del Sistema', icon: 'settings_applications', route: '/admin/settings' },
+                { name: 'Auditoría',           icon: 'admin_panel_settings',  route: '/admin/audit' },
+            ]
+        });
+        groups.push({
+            name: 'STREAMING', items: [
+                { name: '4Trainer TV', icon: 'live_tv', route: '/channels' },
+            ]
+        });
     }
-    if (authStore.isTrainer || authStore.isAdmin) {
-        gestionItems.push({ name: 'Mis Alumnos', icon: 'groups', route: '/trainer/dashboard' });
-        gestionItems.push({ name: 'Mi Estudio / OBS', icon: 'videocam', route: '/trainer/studio' });
-    }
-    groups.push({ name: 'GESTIÓN', items: gestionItems });
 
-    // Biblioteca Group
-    const bibliotecaItems = [];
-    if (authStore.isTrainer || authStore.isAdmin) {
-        bibliotecaItems.push({ name: 'Rutinas', icon: 'fitness_center', route: '/trainer/routines' });
-        bibliotecaItems.push({ name: 'Ejercicios', icon: 'sports_gymnastics', route: '/trainer/exercises' });
+    // ── PROFESOR ─────────────────────────────────────────────────────────────
+    if (authStore.isTrainer && !authStore.isAdmin) {
+        groups.push({
+            name: 'GESTIÓN', items: [
+                { name: 'Panel Principal', icon: 'dashboard',  route: '/trainer/dashboard' },
+                { name: 'Mis Alumnos',     icon: 'groups',     route: '/trainer/dashboard' },
+                { name: 'Agendamiento',    icon: 'event',      route: '/trainer/schedule', badge: 'Próximo' },
+            ]
+        });
+        groups.push({
+            name: 'CONTENIDO', items: [
+                { name: 'Rutinas',         icon: 'fitness_center',    route: '/trainer/dashboard', badge: 'Próximo' },
+                { name: 'Mi Estudio / OBS', icon: 'videocam',         route: '/trainer/studio' },
+                { name: '4Trainer TV',     icon: 'live_tv',           route: '/channels' },
+            ]
+        });
     }
+
+    // ── ALUMNO ────────────────────────────────────────────────────────────────
     if (authStore.isStudent) {
-        bibliotecaItems.push({ name: 'Mis Rutinas', icon: 'assignment', route: '/student/dashboard' });
-    }
-    if (bibliotecaItems.length > 0) {
-        groups.push({ name: 'BIBLIOTECA', items: bibliotecaItems });
+        groups.push({
+            name: 'MI PLAN', items: [
+                { name: 'Mi Dashboard',  icon: 'dashboard',    route: '/student/dashboard' },
+                { name: 'Mis Rutinas',   icon: 'assignment',   route: '/student/dashboard' },
+                { name: 'Mi Progreso',   icon: 'trending_up',  route: '/student/dashboard', badge: 'Próximo' },
+            ]
+        });
+        groups.push({
+            name: 'PROFESORES', items: [
+                { name: 'Buscar Profesor', icon: 'person_search', route: '/channels', badge: 'Próximo' },
+                { name: '4Trainer TV',     icon: 'live_tv',       route: '/channels' },
+            ]
+        });
+        groups.push({
+            name: 'COMUNIDAD', items: [
+                { name: 'Notificaciones', icon: 'notifications', route: '/student/dashboard', badge: 'Próximo' },
+                { name: 'Chat',           icon: 'chat',          route: '/student/dashboard', badge: 'Próximo' },
+                { name: 'Soporte',        icon: 'help_outline',  route: '/student/dashboard', badge: 'Próximo' },
+            ]
+        });
     }
 
-    // Comunidad Group
-    const comunidadItems = [
-        { name: 'Progreso', icon: 'trending_up', route: '/student/progress' },
-        { name: 'Retos', icon: 'emoji_events', route: '/challenges' },
-        { name: '4Trainer TV', icon: 'live_tv', route: '/channels' }
-    ];
-    groups.push({ name: 'COMUNIDAD', items: comunidadItems });
+    // ── MODERADOR ─────────────────────────────────────────────────────────────
+    if (authStore.isModerator) {
+        groups.push({
+            name: 'MODERACIÓN', items: [
+                { name: 'Panel Principal', icon: 'dashboard',  route: '/moderator/dashboard' },
+                { name: '4Trainer TV',     icon: 'live_tv',    route: '/channels' },
+            ]
+        });
+    }
 
     return groups;
 });
@@ -109,13 +143,16 @@ const handleLogout = async () => {
                     class="space-y-1 animate-in fade-in slide-in-from-top-1 duration-300">
                     <a v-for="item in group.items" :key="item.name" :href="item.route"
                         class="flex items-center gap-4 px-6 py-4 rounded-[1.5rem] transition-all group hover:bg-primary/10 dark:hover:bg-primary/5 text-slate-600 dark:text-slate-400 font-bold uppercase tracking-widest text-[10px] relative overflow-hidden active:scale-95">
-                        <span class="material-icons text-xl group-hover:text-primary transition-colors">{{ item.icon
-                            }}</span>
-                        <span class="group-hover:translate-x-1 transition-transform">{{ item.name }}</span>
-
+                        <span class="material-icons text-xl group-hover:text-primary transition-colors">{{ item.icon }}</span>
+                        <span class="group-hover:translate-x-1 transition-transform flex-1">{{ item.name }}</span>
+                        <!-- Badge "Próximo" -->
+                        <span v-if="item.badge"
+                            class="text-[8px] font-black uppercase tracking-widest bg-slate-100 dark:bg-white/5 text-slate-400 px-2 py-0.5 rounded-full border border-slate-200 dark:border-white/10">
+                            {{ item.badge }}
+                        </span>
                         <!-- Active Indicator (Dot) -->
-                        <div
-                            class="absolute right-6 w-1.5 h-1.5 bg-primary rounded-full opacity-0 group-hover:opacity-100 shadow-[0_0_8px_#FF5500]">
+                        <div v-else
+                            class="w-1.5 h-1.5 bg-primary rounded-full opacity-0 group-hover:opacity-100 shadow-[0_0_8px_#FF5500]">
                         </div>
                     </a>
                 </div>
