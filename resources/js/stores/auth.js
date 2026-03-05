@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import axios from "axios";
 import api from "../services/api";
 
 export const useAuthStore = defineStore("auth", {
@@ -50,16 +51,26 @@ export const useAuthStore = defineStore("auth", {
             this.error = null;
 
             try {
-                // Initialize CSRF for Sanctum stateful auth
-                // Use window.location.origin to avoid CORS issues between localhost/127.0.0.1
-                await api.get(`${window.location.origin}/sanctum/csrf-cookie`);
+                // Get CSRF cookie first (web session auth)
+                await axios.get('/sanctum/csrf-cookie', { withCredentials: true });
 
-                const { data } = await api.post("/login", credentials);
-                this.setAuth(data.user, data.token);
+                // POST to web login route to create a real session
+                await axios.post('/login', credentials, {
+                    withCredentials: true,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json',
+                    },
+                });
+
+                // Fetch user info from API (session is now active)
+                const { data } = await api.get('/user');
+                this.user = data.user;
+                this.isAuthenticated = true;
+                localStorage.setItem('user', JSON.stringify(data.user));
                 return data;
             } catch (error) {
-                this.error =
-                    error.response?.data?.message || "Error al iniciar sesión";
+                this.error = error.response?.data?.message || 'Error al iniciar sesión';
                 throw error;
             } finally {
                 this.loading = false;
@@ -70,13 +81,19 @@ export const useAuthStore = defineStore("auth", {
             this.loading = true;
 
             try {
-                // Use the WEB logout route to ensure the session is destroyed
-                await api.post("/../../logout");
+                await axios.post('/logout', {}, {
+                    withCredentials: true,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json',
+                    },
+                });
             } catch (error) {
-                console.error("Error during logout:", error);
+                console.error('Error during logout:', error);
             } finally {
                 this.clearAuth();
                 this.loading = false;
+                window.location.href = '/';
             }
         },
 
