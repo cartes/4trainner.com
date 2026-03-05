@@ -39,7 +39,7 @@ const goalLabel = computed(() => {
     return 'Recién comenzando';
 });
 
-onMounted(() => {
+onMounted(async () => {
     // Theme
     if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         isDark.value = true;
