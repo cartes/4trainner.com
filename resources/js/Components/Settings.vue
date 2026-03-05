@@ -232,7 +232,7 @@ onMounted(() => {
                             </div>
 
                             <p class="text-sm text-slate-500 dark:text-slate-400 mb-8 font-medium">
-                                Selecciona qué tipo de actividad de FoxFit quieres recibir en tu correo o dispositivo
+                                Selecciona qué tipo de actividad de 4Trainer quieres recibir en tu correo o dispositivo
                                 móvil.
                             </p>
                             <input type="hidden" name="notify_new_routines"

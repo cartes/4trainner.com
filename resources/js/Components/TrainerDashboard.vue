@@ -173,7 +173,7 @@ onMounted(() => {
                             <div>
                                 <h1
                                     class="text-5xl font-display font-black text-primary-dark dark:text-white tracking-tight uppercase italic">
-                                    <span class="text-primary not-italic">Fox</span>Fit
+                                    <span class="text-primary not-italic">4</span><span class="text-aqua-400 not-italic">Trainer</span>
                                     <span
                                         class="font-light not-italic text-slate-400 dark:text-slate-500 text-3xl ml-2">Personal
                                         Trainer</span>
@@ -288,7 +288,7 @@ onMounted(() => {
                                     </div>
                                     <p class="text-slate-500 dark:text-slate-400 font-medium max-w-xl">
                                         Configura tu software de transmisión (ej. OBS Studio) con estos datos para
-                                        empezar a emitir clases en directo a tus alumnos en FoxFit TV.
+                                        empezar a emitir clases en directo a tus alumnos en 4Trainer TV.
                                     </p>
                                 </div>
 

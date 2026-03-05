@@ -95,7 +95,7 @@ const getStatusLabel = (status) => {
                 <nav class="flex items-center gap-2 text-sm font-bold text-slate-500 dark:text-slate-400 mb-8">
                     <a href="/channels" class="hover:text-primary transition-colors flex items-center gap-1">
                         <span class="material-icons text-lg">arrow_back</span>
-                        FoxFit TV
+                        4Trainer TV
                     </a>
                     <span class="material-icons text-sm">chevron_right</span>
                     <span class="text-slate-800 dark:text-white uppercase tracking-widest text-xs">{{ channelObj.name

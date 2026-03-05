@@ -57,7 +57,7 @@ const menuGroups = computed(() => {
     const comunidadItems = [
         { name: 'Progreso', icon: 'trending_up', route: '/student/progress' },
         { name: 'Retos', icon: 'emoji_events', route: '/challenges' },
-        { name: 'FoxFit TV', icon: 'live_tv', route: '/channels' }
+        { name: '4Trainer TV', icon: 'live_tv', route: '/channels' }
     ];
     groups.push({ name: 'COMUNIDAD', items: comunidadItems });
 
@@ -84,7 +84,7 @@ const handleLogout = async () => {
                 <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center not-italic">
                     <span class="material-icons text-primary-dark text-2xl">bolt</span>
                 </div>
-                <span class="text-primary not-italic">Fox</span>Fit
+                <span class="text-primary not-italic">4</span><span class="text-aqua-400 not-italic">Trainer</span>
             </h1>
         </div>
 

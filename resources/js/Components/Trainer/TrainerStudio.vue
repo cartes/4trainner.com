@@ -187,7 +187,7 @@ onUnmounted(() => {
                             </a>
                             <h1
                                 class="text-4xl font-display font-black text-primary-dark dark:text-white uppercase tracking-tight italic">
-                                FOXFIT <span class="text-primary not-italic">STUDIO</span>
+                                <span class="text-primary">4</span><span class="text-aqua-400 not-italic">TRAINER</span> <span class="text-primary not-italic">STUDIO</span>
                             </h1>
                         </div>
                         <!-- Live badge (auto-updates via polling) -->

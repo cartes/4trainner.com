@@ -38,7 +38,7 @@ onMounted(() => {
         <!-- Login Modal -->
         <LoginForm v-if="showLoginModal" @close="showLoginModal = false" />
         <div class="bg-primary text-black text-center py-2 text-sm font-semibold tracking-wide">
-            10% off online booking! Use the code <span class="font-bold">FOXFIT</span>
+            10% off online booking! Use the code <span class="font-bold">4TRAINER</span>
         </div>
         <nav class="sticky top-0 z-50 glass-nav border-b border-slate-200 dark:border-slate-800">
             <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -48,11 +48,11 @@ onMounted(() => {
                         <span class="material-icons text-white">bolt</span>
                     </div>
                     <span
-                        class="font-display text-2xl font-bold tracking-tight text-primary-dark dark:text-white">FoxFit</span>
+                        class="font-display text-2xl font-bold tracking-tight text-primary-dark dark:text-white">4Trainer</span>
                 </div>
                 <div class="hidden md:flex items-center gap-8 text-sm font-medium">
                     <a class="nav-link-aqua" href="#">Meet Emily</a>
-                    <a class="nav-link-aqua" href="#">FoxFit</a>
+                    <a class="nav-link-aqua" href="#">4Trainer</a>
                     <a :href="pricingUrl" class="nav-link-aqua">Plans & Pricing</a>
                     <a class="nav-link-aqua" href="#">Challenges</a>
                     <a class="nav-link-aqua" href="#">Book a Class</a>
@@ -121,7 +121,7 @@ onMounted(() => {
             <div class="absolute bottom-0 left-0 w-full flex">
                 <a class="flex-1 py-10 bg-aqua-200 dark:bg-aqua-500/20 text-center text-primary-dark dark:text-white font-semibold flex items-center justify-center gap-2 hover:bg-aqua-300 transition-colors"
                     href="#">
-                    Discover FoxFit <span class="material-icons">chevron_right</span>
+                    Descubre 4Trainer <span class="material-icons">chevron_right</span>
                 </a>
                 <a class="flex-1 py-10 bg-primary-dark dark:bg-slate-900 text-center text-white font-semibold flex items-center justify-center gap-2 hover:bg-slate-800 transition-colors"
                     href="#">
@@ -232,7 +232,7 @@ onMounted(() => {
                             <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
                                 <span class="material-icons text-primary-dark">bolt</span>
                             </div>
-                            <span class="font-display text-2xl font-bold tracking-tight">FoxFit</span>
+                            <span class="font-display text-2xl font-bold tracking-tight">4Trainer</span>
                         </div>
                         <p class="text-slate-400 max-w-sm mb-8">
                             Transforming lives through digital fitness since 2020. Join our community and unleash your
@@ -272,7 +272,7 @@ onMounted(() => {
                     </div>
                 </div>
                 <div class="mt-20 pt-8 border-t border-slate-800 text-center text-slate-500 text-sm">
-                    © 2023 FoxFit Video Management. All rights reserved.
+                    © 2023 4Trainer Video Management. All rights reserved.
                 </div>
             </div>
         </footer>

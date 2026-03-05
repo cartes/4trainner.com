@@ -37,7 +37,7 @@ const toggleDarkMode = () => {
                         <span class="material-icons text-white">bolt</span>
                     </div>
                     <span
-                        class="font-display text-2xl font-bold tracking-tight text-primary-dark dark:text-white">FoxFit</span>
+                        class="font-display text-2xl font-bold tracking-tight text-primary-dark dark:text-white">4Trainer</span>
                 </a>
                 <div class="flex items-center gap-6">
                     <a href="/" class="nav-link-aqua font-medium text-sm">Volver al Inicio</a>

@@ -130,7 +130,7 @@ const close = () => {
                                     class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
                                 Conectando...
                             </span>
-                            <span v-else>Entrar a FoxFit</span>
+                            <span v-else>Entrar a 4Trainer</span>
                         </button>
                     </div>
 
