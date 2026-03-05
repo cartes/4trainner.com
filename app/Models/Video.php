@@ -17,6 +17,7 @@ class Video extends Model
         'file_path',
         'thumbnail_path',
         'duration',
+        'size',
     ];
 
     /**

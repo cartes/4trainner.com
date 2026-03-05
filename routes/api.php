@@ -35,6 +35,12 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
         Route::post('/trainer/routines', [\App\Http\Controllers\Api\V1\Trainer\RoutineController::class, 'store']);
         Route::post('/trainer/routines/assign', [\App\Http\Controllers\Api\V1\Trainer\RoutineController::class, 'assign']);
         Route::get('/trainer/exercises', [\App\Http\Controllers\Api\V1\Trainer\RoutineController::class, 'exercises']);
+
+        // Channel & VOD management
+        Route::get('/trainer/channel', [\App\Http\Controllers\Api\V1\Trainer\ChannelController::class, 'show']);
+        Route::get('/trainer/channel/status', [\App\Http\Controllers\Api\V1\Trainer\ChannelController::class, 'status']);
+        Route::post('/trainer/channel/videos', [\App\Http\Controllers\Api\V1\Trainer\ChannelController::class, 'uploadVideo']);
+        Route::delete('/trainer/channel/videos/{video}', [\App\Http\Controllers\Api\V1\Trainer\ChannelController::class, 'destroyVideo']);
     });
 
     // Student dashboard
