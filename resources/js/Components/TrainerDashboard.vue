@@ -184,6 +184,16 @@ onMounted(() => {
                                     Gestión estratégica de alumnos y rendimiento
                                 </p>
                             </div>
+                            <!-- Acceso directo al Studio — siempre visible -->
+                            <a href="/trainer/studio"
+                                class="flex items-center gap-3 bg-red-500 hover:bg-red-600 text-white font-black uppercase tracking-widest text-sm px-6 py-4 rounded-2xl shadow-xl shadow-red-500/30 transition-all hover:scale-105 active:scale-95 shrink-0">
+                                <span class="relative flex h-3 w-3">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+                                </span>
+                                <span class="material-icons text-lg">videocam</span>
+                                Mi Estudio / OBS
+                            </a>
                         </header>
 
                         <!-- KPI Cards -->

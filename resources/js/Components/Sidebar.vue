@@ -36,6 +36,7 @@ const menuGroups = computed(() => {
     }
     if (authStore.isTrainer || authStore.isAdmin) {
         gestionItems.push({ name: 'Mis Alumnos', icon: 'groups', route: '/trainer/dashboard' });
+        gestionItems.push({ name: 'Mi Estudio / OBS', icon: 'videocam', route: '/trainer/studio' });
     }
     groups.push({ name: 'GESTIÓN', items: gestionItems });
 
