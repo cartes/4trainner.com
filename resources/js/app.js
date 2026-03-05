@@ -4,6 +4,7 @@ import $ from "jquery";
 import "flowbite";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
+import { useAuthStore } from "./stores/auth.js";
 
 // Import components
 import Welcome from "./Components/Welcome.vue";
@@ -58,6 +59,19 @@ if (appElement) {
     if (Component) {
         const app = createApp(Component, { ...appElement.dataset });
         app.use(pinia);
+
+        // Hydrate authStore from blade-injected data-auth-user BEFORE mount
+        // so Sidebar/Topbar see the user on first render (no API call needed)
+        if (appElement.dataset.authUser) {
+            try {
+                const authStore = useAuthStore(pinia);
+                authStore.user = JSON.parse(appElement.dataset.authUser);
+                authStore.isAuthenticated = true;
+            } catch (e) {
+                console.error('Error hydrating authStore:', e);
+            }
+        }
+
         app.mount("#app");
     } else {
         console.error(`Component "${componentName}" not found in registry.`);

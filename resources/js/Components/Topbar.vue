@@ -1,7 +1,6 @@
 <script setup>
 import { computed, ref, onMounted, onUnmounted } from 'vue';
 import { useAuthStore } from '../stores/auth';
-import axios from 'axios';
 
 const props = defineProps({
     isDark: Boolean,
@@ -29,13 +28,6 @@ const closeProfile = (e) => {
 
 onMounted(async () => {
     window.addEventListener('click', closeProfile);
-    if (!authStore.user) {
-        try {
-            const { data } = await axios.get('/api/v1/user', { withCredentials: true });
-            authStore.user = data;
-            authStore.isAuthenticated = true;
-        } catch { /* silencioso */ }
-    }
 });
 onUnmounted(() => window.removeEventListener('click', closeProfile));
 

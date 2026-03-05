@@ -23,8 +23,10 @@
 </script>
 
 <body class="bg-background-light dark:bg-background-dark border-none transition-colors duration-300">
-    <div id="app" data-component="TrainerStudio" data-channel="{{ json_encode($channel) }}"
-        data-user="{{ json_encode(auth()->user()) }}">
+    <div id="app" data-component="TrainerStudio"
+        data-channel="{{ json_encode($channel) }}"
+        data-user="{{ json_encode(auth()->user()) }}"
+        data-auth-user='{!! json_encode(["id"=>auth()->id(),"name"=>auth()->user()->name,"email"=>auth()->user()->email,"roles"=>auth()->user()->getRoleNames()]) !!}'>
     </div>
 </body>
 

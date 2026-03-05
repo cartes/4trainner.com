@@ -24,7 +24,8 @@
 
 <body class="bg-background-light dark:bg-background-dark border-none transition-colors duration-300">
     <div id="app" data-component="TrainerSchedule"
-        data-user-name="{{ $userName }}">
+        data-user-name="{{ $userName }}"
+        data-auth-user='{!! json_encode(["id"=>auth()->id(),"name"=>auth()->user()->name,"email"=>auth()->user()->email,"roles"=>auth()->user()->getRoleNames()]) !!}'>
     </div>
 </body>
 

@@ -23,7 +23,8 @@
 </script>
 
 <body class="bg-background-light dark:bg-background-dark border-none transition-colors duration-300">
-    <div id="app" data-component="TrainerDashboard" data-auth-check="{{ Auth::check() ? 'true' : 'false' }}">
+    <div id="app" data-component="TrainerDashboard"
+        data-auth-user='{!! json_encode(["id"=>auth()->id(),"name"=>auth()->user()->name,"email"=>auth()->user()->email,"roles"=>auth()->user()->getRoleNames()]) !!}'>
     </div>
 </body>
 

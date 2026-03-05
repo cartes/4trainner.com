@@ -51,7 +51,15 @@ class AdminDashboardController extends Controller
             'recent_users' => $recentUsers,
         ]);
 
-        return view('admin.dashboard', compact('dashboardData'));
+        $authUser = auth()->user();
+        $authUserJson = json_encode([
+            'id'    => $authUser->id,
+            'name'  => $authUser->name,
+            'email' => $authUser->email,
+            'roles' => $authUser->getRoleNames(),
+        ]);
+
+        return view('admin.dashboard', compact('dashboardData', 'authUserJson'));
     }
 
 

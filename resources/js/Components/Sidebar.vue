@@ -1,7 +1,6 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 import { useAuthStore } from '../stores/auth';
-import axios from 'axios';
 
 const props = defineProps({
     isDark: Boolean
@@ -12,24 +11,8 @@ const emit = defineEmits(['toggle-dark']);
 const authStore = useAuthStore();
 const user = computed(() => authStore.user);
 
-// Auto-hydrate authStore if empty (e.g. TrainerDashboard doesn't pass user props)
-onMounted(async () => {
-    if (!authStore.user) {
-        try {
-            const { data } = await axios.get('/api/v1/user', { withCredentials: true });
-            authStore.user = data;
-            authStore.isAuthenticated = true;
-        } catch {
-            // Not logged in — leave authStore empty
-        }
-    }
-
-    // Open all groups by default after user is resolved
-    openMenus.value = menuGroups.value.map(g => g.name);
-});
-
-// State for open sub-menus
-const openMenus = ref([]);
+// State for open sub-menus — all open by default
+const openMenus = ref(['ADMINISTRACIÓN', 'STREAMING', 'GESTIÓN', 'CONTENIDO', 'MI PLAN', 'PROFESORES', 'COMUNIDAD', 'MODERACIÓN']);
 
 const toggleMenu = (groupName) => {
     if (openMenus.value.includes(groupName)) {
