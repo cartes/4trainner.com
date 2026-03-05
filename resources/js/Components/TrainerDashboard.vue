@@ -173,7 +173,7 @@ onMounted(() => {
                             <div>
                                 <h1
                                     class="text-5xl font-display font-black text-primary-dark dark:text-white tracking-tight uppercase italic">
-                                    <span class="text-primary not-italic">4</span><span class="text-aqua-400 not-italic">Trainer</span>
+                                    <span class="text-primary not-italic">4</span><span class="text-slate-600 dark:text-slate-400 italic">Trainer</span>
                                     <span
                                         class="font-light not-italic text-slate-400 dark:text-slate-500 text-3xl ml-2">Personal
                                         Trainer</span>

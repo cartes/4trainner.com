@@ -65,7 +65,7 @@ onMounted(() => {
                     <div>
                         <h1
                             class="text-4xl lg:text-5xl font-display font-black text-primary-dark dark:text-white uppercase tracking-tight italic">
-                            <span class="text-primary not-italic">4</span><span class="text-aqua-400 not-italic">Trainer</span> <span class="text-primary not-italic">TV</span>
+                            <span class="text-primary not-italic">4</span><span class="text-slate-600 dark:text-slate-400 italic">Trainer</span> <span class="text-primary not-italic">TV</span>
                         </h1>
                         <p class="text-slate-500 dark:text-slate-400 mt-2 font-medium max-w-2xl">
                             Entrena en vivo y repasa las clases anteriores de los mejores profesores. Elige tu canal

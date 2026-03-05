@@ -84,7 +84,7 @@ const handleLogout = async () => {
                 <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center not-italic">
                     <span class="material-icons text-primary-dark text-2xl">bolt</span>
                 </div>
-                <span class="text-primary not-italic">4</span><span class="text-aqua-400 not-italic">Trainer</span>
+                <span class="text-primary not-italic">4</span><span class="text-slate-600 dark:text-slate-400 italic">Trainer</span>
             </h1>
         </div>
 
